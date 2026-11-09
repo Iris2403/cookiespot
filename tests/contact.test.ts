@@ -1,4 +1,5 @@
 import { test } from "node:test";
+import { existsSync } from "node:fs";
 import assert from "node:assert/strict";
 import { clean, isSpam, normalize, validate } from "../src/lib/contact.ts";
 import { rateLimit, __resetRateLimit } from "../src/lib/rateLimit.ts";
@@ -38,5 +39,7 @@ test("catalogue integrity", () => {
     assert.ok(categories.some((c) => c.id === p.category), `category of ${p.slug}`);
     assert.ok(p.price === null || p.price > 0);
     assert.match(orderUrl(p), /^https:\/\/wolt\.com\//);
+    if (p.image) assert.ok(existsSync(new URL(`../public${p.image}`, import.meta.url)), `image for ${p.slug}`);
+    if (p.photo) assert.ok(existsSync(new URL(`../public${p.photo}`, import.meta.url)), `photo for ${p.slug}`);
   }
 });

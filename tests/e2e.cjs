@@ -20,10 +20,10 @@ const ok = (m) => console.log('✓', m);
   // category filter
   await p.click('.menu-tab:has-text("Brookies")');
   assert.equal(await p.$$eval('.menu-sec', g => g.length), 1);
-  assert.equal(await p.$$eval('.menu-row', g => g.length), 2); ok('category filter');
+  assert.equal(await p.$$eval('.menu-card', g => g.length), 2); ok('category filter');
   await p.click('.menu-tab:has-text("All")');
   // dialog
-  await p.click('.menu-row__main:has-text("Pistachio Cookie")');
+  await p.click('.menu-card__main:has-text("Pistachio Cookie")');
   await p.waitForSelector('dialog.product-dialog[open]');
   assert.match(await p.textContent('#product-dialog-title'), /Pistachio Cookie/);
   assert.ok((await p.evaluate(() => location.hash)).includes('#p/pistachio-cookie'));
@@ -42,11 +42,14 @@ const ok = (m) => console.log('✓', m);
   await p.waitForTimeout(300);
   assert.match(await p.textContent('.menu-tab[aria-pressed="true"]'), /skillet/i); ok('"more than a cookie" panel selects menu category');
   // favourites open dialog
-  await p.click('.fav__open >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('favourite opens dialog');
+  await p.click('.fav-card__open >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('favourite opens dialog');
   await p.waitForTimeout(300);
-  await p.click('.menu-tab:has-text("Drinks")'); await p.click('.menu-row__main >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('drinks board item opens dialog');
+  await p.click('.menu-tab:text-is("Coffee")'); await p.click('.menu-card__main >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('coffee item opens dialog');
   await p.waitForTimeout(300); await p.click('.menu-tab:has-text("All")');
-  assert.ok(await p.$('a.ig__handle[href^="https://www.instagram.com/thecookiespotathens"]')); ok('Instagram band links to the brand account');
+  assert.ok(await p.$('#gallery a[href^="https://www.instagram.com/thecookiespotathens"]')); ok('gallery links to the brand Instagram');
+  assert.equal(await p.$$eval('header img.logo[src*="logo.svg"]', e => e.length), 1); ok('real brand logo in header');
+  const broken = await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); } await new Promise(r => setTimeout(r, 800)); return [...document.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.src); });
+  assert.deepEqual(broken, []); ok('all images load');
   assert.equal(await p.$$eval('text=/Photo coming soon/i', e => e.length), 0); ok('no placeholder photo boxes');
   const nNav = await p.evaluate(() => { document.getElementById('gallery').scrollIntoView({ behavior: 'instant' }); return new Promise(r => setTimeout(() => r(document.querySelector('.site-nav__link.is-current')?.textContent), 500)); });
   assert.match(nNav || '', /gallery/i); ok('scroll-spy highlights current section');

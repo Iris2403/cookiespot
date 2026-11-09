@@ -1,22 +1,19 @@
 /**
- * Typographic wordmark.
- * PLACEHOLDER for the official logo, which could not be downloaded in this build environment.
- * To use the real logo: add it to /public/brand/logo.svg and set OFFICIAL_LOGO below.
+ * The Cookie Spot logo — vector trace of the brand's handwritten logo (public/brand/logo*.svg).
  */
-import Image from "next/image";
 import { asset } from "@/lib/site";
 
-const OFFICIAL_LOGO: { src: string; width: number; height: number } | null = null;
-
-export function Wordmark({ tone = "dark" }: { tone?: "dark" | "light" }) {
-  if (OFFICIAL_LOGO) {
-    return <Image src={asset(OFFICIAL_LOGO.src)} width={OFFICIAL_LOGO.width} height={OFFICIAL_LOGO.height} alt="The Cookie Spot" priority />;
-  }
+export function Wordmark({ tone = "dark", height = 46 }: { tone?: "dark" | "light"; height?: number }) {
+  const width = Math.round((height * 1838) / 1200);
   return (
-    <span className={`wordmark wordmark--${tone}`}>
-      <span className="sr-only">The Cookie Spot</span>
-      <span className="wordmark__the" aria-hidden="true">the</span>
-      <span className="wordmark__name" aria-hidden="true">Cookie<span className="wordmark__dot" />Spot</span>
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element -- tiny vector logo, no optimisation needed
+    <img
+      className="logo"
+      src={asset(tone === "light" ? "/brand/logo-white.svg" : "/brand/logo.svg")}
+      width={width}
+      height={height}
+      alt="The Cookie Spot"
+      decoding="async"
+    />
   );
 }

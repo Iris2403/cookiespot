@@ -96,8 +96,8 @@ export function ProductDialogProvider({ locale, children }: { locale: Locale; ch
       >
         {product && (
           <div className="product-dialog__body">
-            <div className={`product-dialog__media tone-${category?.tone ?? "vanilla"}`}>
-              <ProductVisual product={product} sizes="(min-width: 900px) 50vw, 100vw" label={displayName} />
+            <div className={`product-dialog__media${product.photo ? " has-photo" : ""}`}>
+              <ProductVisual product={product} variant="feature" sizes="(min-width: 900px) 50vw, 100vw" label={displayName} />
             </div>
             <div className="product-dialog__content">
               <button type="button" className="icon-btn product-dialog__close" onClick={close} aria-label={t.menu.close}>
@@ -105,9 +105,10 @@ export function ProductDialogProvider({ locale, children }: { locale: Locale; ch
               </button>
               {category && <p className="eyebrow">{category.label[locale]}</p>}
               <h2 id="product-dialog-title" className="product-dialog__title">{displayName}</h2>
-              {(product.dietary?.length || product.signature) && (
+              {(product.dietary?.length || product.popular || product.isNew) && (
                 <ul className="chips" aria-label="Tags">
-                  {product.signature && <li className="chip chip--accent">{t.menu.signature}</li>}
+                  {product.popular && <li className="chip chip--accent">{t.menu.popular}</li>}
+                  {product.isNew && <li className="chip chip--accent">{t.menu.new}</li>}
                   {product.dietary?.map((d) => <li key={d} className="chip chip--green">{t.menu.dietary[d]}</li>)}
                 </ul>
               )}
@@ -129,6 +130,7 @@ export function ProductDialogProvider({ locale, children }: { locale: Locale; ch
                 <div className="price price--lg">
                   {product.price != null ? (
                     <>
+                      {product.priceFrom && <small className="price__from">{t.menu.from}</small>}
                       <span>{formatPrice(product.price, locale)}</span>
                       {product.compareAtPrice && (
                         <s aria-label={`${t.menu.was} ${formatPrice(product.compareAtPrice, locale)}`}>{formatPrice(product.compareAtPrice, locale)}</s>

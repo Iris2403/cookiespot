@@ -1,5 +1,7 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
+import { asset } from "@/lib/site";
 import { MAPS_EMBED_URL } from "@/content/business";
 import { PinIcon } from "./icons";
 
@@ -18,10 +20,7 @@ export function MapEmbed({ labels }: { labels: { showMap: string; mapNote: strin
         />
       ) : (
         <div className="map__placeholder">
-          <div className="map__streets" aria-hidden="true">
-            <span /><span /><span /><span />
-            <i className="map__pin"><PinIcon /></i>
-          </div>
+          <Image src={asset("/images/brand/storefront.webp")} alt="" fill sizes="(min-width: 960px) 50vw, 92vw" style={{ objectFit: "cover" }} className="map__photo" />
           <button type="button" className="btn btn--dark" onClick={() => setOn(true)}>
             <PinIcon /> {labels.showMap}
           </button>

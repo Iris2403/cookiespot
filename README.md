@@ -30,35 +30,48 @@ The Pages copy is built with `STATIC_EXPORT=1` (`output: "export"`, base path `/
 
 For the full site, deploy the normal build to a Node host such as Vercel.
 
-## Design system (warm editorial, strictly 2D)
+## Design system (photography-led, strictly 2D)
 
-No Three.js, WebGL, 3D models, perspective or fake-depth effects. Motion is CSS plus small `IntersectionObserver` scripts, with no animation library. All motion respects `prefers-reduced-motion`.
+No Three.js, WebGL, 3D models, perspective or fake-depth effects. Motion is CSS plus small `IntersectionObserver` scripts and respects `prefers-reduced-motion`.
 
-- **Feel:** like a premium bakery magazine.
-  - Cream and white pages with generous space.
-  - Thin hairline rules instead of boxes.
-  - Orange used as an accent, not as a background.
-- **Colours:**
-  - Main: chocolate `#3D2618` for text and the footer; cream `#FFF8EF` and white for pages.
-  - Accent: orange `#ED7033` for buttons, the hero disc and one feature tile. Italic orange headline accents use `#C9551C` (large text only); small orange text uses `#A84413`.
-  - Biscuit `#E9D8C5` for the story and contact sections. Pistachio and strawberry only as light tints.
+The design is built from the brand's real touchpoints, taken from the photos supplied by the owner:
+
+| Element | Source | Use on the site |
+| --- | --- | --- |
+| Hand-lettered logo | Profile picture / boxes | Traced to vector: `public/brand/logo.svg` and `logo-white.svg`. Used in the header, footer, favicon and sharing image |
+| Logo-printed wrapping paper | Instagram product shots | `public/brand/pattern.svg`, used for the band under the hero, the footer edge and the mobile menu |
+| Box orange `#ED7033` | Packaging | Buttons and accents. Button text is deep brown `#2A1409` for contrast |
+| Logo brown `#542B16` | Logo | Text colour |
+| Studio peach `#FCBD8E` | Wolt studio shots | Offers section and bento tiles, so the studio photos blend in |
+| Shop terracotta `#5D2821` | Shop interior | "We bake it personally" story section |
+| "We bake it personally" | Printed inside the boxes | Story headline in a hand-lettered face (Caveat), and in the hero photo |
+
 - **Type:**
-  - Noto Serif Display, light weights with italics, for headings. It is high-contrast, editorial, and has Greek glyphs.
+  - Alegreya for headings: a warm serif with Greek glyphs that sits well beside the hand-lettered logo.
   - Manrope for text and UI.
-- **Imagery without photos:**
-  - Fine-line ink drawings (`src/components/LineArt.tsx`) are used as ornaments, the way a printed bakery menu uses drawings. They never pose as photographs, and there are no placeholder boxes.
-  - When authorised photos are added, they appear automatically: products via `image` in `menu.ts`; hero and shop via `media.ts`; gallery via `gallery.ts`. The gallery section replaces the Instagram band as soon as it has photos.
 - **Sections:**
-  1. Hero: serif headline, orange disc with an ink drawing, and a facts strip
-  2. House favourites: a numbered list
-  3. Menu: printed-menu rows with dotted price leaders and an italic note on each item
-  4. "More than just a cookie": chapter grid
-  5. "We bake it personally" story, with a drop-cap lead
-  6. Offers as coupons
-  7. Instagram band, which becomes the gallery once photos exist
-  8. Reviews
-  9. Location
-  10. Contact and footer
+  1. Hero: the campaign photo in an arch, plus a peach studio shot
+  2. Logo-paper band
+  3. Favourites: large photo cards
+  4. Menu: every product with its real Wolt photo
+  5. "More than just a cookie": a bento grid of real photos
+  6. Story: terracotta, with shop and counter photos
+  7. Offers: peach, with the studio shots
+  8. Gallery and full-screen viewer
+  9. Reviews
+  10. Location: a storefront photo; the Google map loads only when clicked
+  11. Contact and footer
+
+### Photo assets
+
+The 57 images in `public/images/` were cropped from screenshots supplied by the owner:
+- Wolt app product photos: `thumbs/`, `brand/peach-*`, `products/ice-cream-cup`, `products/mini-cookies-box`.
+- Instagram posts: product feature photos, `brand/we-bake-it-personally`, `brand/cookie-stack`, and the gallery.
+- Press photos from lifo.gr and ethnos.gr: `brand/storefront`, `brand/counter`, `gallery/box-of-six`.
+
+All phone UI (status bars, buttons, captions) was removed. Wolt's close button was edited out of the 10-cookie studio shot (`peach-ten`); the 6-cookie shot (`peach-six`) was cropped to drop it.
+
+**Confirm usage rights for the press photos** with their photographers or publications before launch, or swap in the brand's own originals. Higher-resolution originals will also look sharper: the menu thumbnails are only about 236px wide. Replacing a file with the same name is enough.
 
 ## Stack
 
@@ -93,19 +106,11 @@ Edit `src/content/menu.ts`. That is the only place prices live; every card, dial
 
 ### Photography
 
-The brand's photos (Instagram, Google, the shop, packaging) could not be accessed from the build environment, so the site is designed to look finished without them. It uses ink drawings, typography and colour. **No stock or generated "product photos" are used.**
-
-To add real photography, use only images owned or authorised by The Cookie Spot. WebP/AVIF/JPEG at about 1600px is ideal; `next/image` handles resizing.
-
-| Where | How |
-| --- | --- |
-| Products (menu dialog, favourites) | Put files in `public/images/products/` and set `image` on the product in `src/content/menu.ts` |
-| Hero disc, story circle | `src/content/media.ts`: set `src` (the `brief` field describes the shot) |
-| Gallery | Add entries to `src/content/gallery.ts`. The gallery then replaces the Instagram band. |
+Products use `image` (menu photo) and optionally `photo` (large editorial photo) in `src/content/menu.ts`. Brand photos are in `src/content/media.ts` and the gallery in `src/content/gallery.ts`. Paths are under `/public`. A product without a photo falls back to a small ink drawing.
 
 ### Logo
 
-`src/components/Wordmark.tsx` is a **typographic placeholder**. Add the official logo at `public/brand/logo.svg` and set `OFFICIAL_LOGO` in that file.
+`public/brand/logo.svg` is a vector trace of the brand's hand-lettered logo. If the brand has the original vector file, replace it, keeping the same file name and a similar aspect ratio (about 1838×1200).
 
 ## Ordering integration
 
@@ -152,11 +157,15 @@ Also recommended:
 
 ## Data provenance (read before launch)
 
-During the build, the brand's Wolt, Instagram and Google pages could **not be opened directly** from the build environment (network policy). The data was gathered from search-engine snapshots of the Wolt listing and the Tripadvisor listing on 2026-11-09:
-
-- **Address, phone, opening hours:** from the Wolt listing and Tripadvisor. `business.verifiedAgainstGoogleProfile` is `false`. Confirm against the Google Business Profile, then flip it.
-- **Menu:** 29 items in 11 categories, with prices where the snapshot showed them. Some prices are `null`: Blueberry Lemon, both skillets, Cookie Dippers, two milkshakes.
-- **Not verified:**
-  - Item lists for Hot Drinks, Cookie Drinks and Coffee. Those categories show a "browse on Wolt" card.
-  - The **Dubai Chocolate Cookie** wasn't found in the listing snapshots, so it is not shown.
+- **Menu (`src/content/menu.ts`):**
+  - 52 products in 13 categories, transcribed from screenshots of the live Wolt app supplied by the owner on 2026-11-09.
+  - Names, Greek descriptions and prices all come from those screenshots.
+  - Where Wolt cut a description short, the text stops at what was visible.
+  - English descriptions are translations.
+- **Combos:** prices depend on the cookies chosen, so they are shown as "from".
+- **Address and phone:** from the Wolt and Tripadvisor listings.
+- **Hours:** from the Wolt listing. `business.verifiedAgainstGoogleProfile` is `false`. Confirm the hours against the Google Business Profile, then flip it.
 - **Reviews:** no review text could be verified, so none is quoted. The section links to the live Google and Wolt reviews. Add genuine quotes to `src/content/reviews.ts` (author, date, source URL) and they render automatically.
+- **Not on the site:**
+  - Cookie Dippers: not in Wolt's current categories.
+  - Strawberry cookie and the frosted cookie cake: seen on Instagram but not on Wolt. The strawberry cookie appears only as a gallery photo.

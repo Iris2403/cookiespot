@@ -1,26 +1,35 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Noto_Serif_Display, Manrope } from "next/font/google";
+import { Alegreya, Caveat, Manrope } from "next/font/google";
 import { getDictionary, isLocale, locales } from "@/i18n/dictionaries";
 import { SITE_URL, absoluteUrl } from "@/lib/site";
 import { RevealObserver } from "@/components/RevealObserver";
 import "../globals.css";
 
-// Display face: Noto Serif Display — high-contrast editorial serif with Greek. Light weights + italic.
-const display = Noto_Serif_Display({
+// Headings: Alegreya — warm, slightly calligraphic serif (Greek included) that sits well beside
+// the hand-lettered logo.
+const display = Alegreya({
   subsets: ["latin", "greek"],
-  weight: ["400", "500"],
+  weight: ["700", "800"],
   style: ["normal", "italic"],
   variable: "--font-display",
-  // "optional": headlines never wait for, or re-paint with, the web font on slow first visits.
   display: "optional",
 });
 
-// Text face: Manrope — warm, modern sans with Greek.
+// Text: Manrope — clean, warm sans with Greek.
 const sans = Manrope({
   subsets: ["latin", "greek"],
   variable: "--font-sans",
   display: "swap",
+});
+
+// Hand-lettering accent (Latin only), used for the brand line "We bake it personally".
+const script = Caveat({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-script",
+  display: "swap",
+  preload: false,
 });
 
 export const dynamicParams = false;
@@ -67,7 +76,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   if (!isLocale(lang)) notFound();
   const t = getDictionary(lang);
   return (
-    <html lang={lang} className={`${display.variable} ${sans.variable}`}>
+    <html lang={lang} className={`${display.variable} ${sans.variable} ${script.variable}`}>
       <body>
         <a className="skip-link" href="#main">{t.skip}</a>
         {children}
