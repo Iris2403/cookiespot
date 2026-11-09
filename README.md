@@ -166,7 +166,7 @@ Also recommended:
 - **Combos:** prices depend on the cookies chosen, so they are shown as "from".
 - **Address and phone:** from the Wolt and Tripadvisor listings.
 - **Hours:** from the Wolt listing. `business.verifiedAgainstGoogleProfile` is `false`. Confirm the hours against the Google Business Profile, then flip it.
-- **Reviews:** a carousel of Google reviews from `src/content/reviews.ts`. It currently holds 2 short Google quotes republished by Restaurant Guru, with no reviewer names. Add full reviews copied word for word from Google Maps (author, date, rating) and they appear automatically, with arrows.
+- **Reviews:** a carousel of 5 genuine 5-star Google reviews, copied word for word from Google Maps screenshots supplied by the owner (`src/content/reviews.ts`). Dates are left out because Google only shows relative dates ("3 months ago"), which would go out of date.
 - **Not on the site:**
   - Cookie Dippers: not in Wolt's current categories.
   - Strawberry cookie and the frosted cookie cake: seen on Instagram but not on Wolt. The strawberry cookie appears only as a gallery photo.

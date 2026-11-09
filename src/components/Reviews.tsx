@@ -48,22 +48,17 @@ export function Reviews({ locale }: { locale: Locale }) {
           >
             <figure className="review-slide" key={i} aria-live="polite">
               <span className="review-slide__mark" aria-hidden="true">“</span>
-              {r.rating && (
-                <span className="review-slide__stars" aria-label={`${r.rating}/5`}>
-                  {Array.from({ length: r.rating }, (_, k) => <StarIcon key={k} />)}
-                </span>
-              )}
-              <blockquote lang={r.lang}>
+              <span className="review-slide__stars" role="img" aria-label={`${r.rating}/5`}>
+                {Array.from({ length: r.rating }, (_, k) => <StarIcon key={k} />)}
+              </span>
+              <blockquote lang={r.lang} className={r.text.length > 260 ? "is-long" : undefined}>
                 <p>{r.text}</p>
               </blockquote>
               <figcaption className="review-slide__meta">
-                {r.author && <span className="review-slide__author">{r.author}</span>}
+                <span className="review-slide__author">{r.author}</span>
                 <span>
                   {t.reviews.source}:{" "}
-                  <a href={r.url} target="_blank" rel="noopener noreferrer" className="link">
-                    {r.source}{r.via ? ` (${t.reviews.via} ${r.via})` : ""}
-                  </a>
-                  {r.date ? ` · ${r.date}` : ""}
+                  <a href={r.url} target="_blank" rel="noopener noreferrer" className="link">{r.source}</a>
                 </span>
               </figcaption>
             </figure>
