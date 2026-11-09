@@ -1,4 +1,6 @@
 import type { MetadataRoute } from "next";
+
+export const dynamic = "force-static";
 import { MENU_LAST_VERIFIED } from "@/content/menu";
 import { absoluteUrl } from "@/lib/site";
 

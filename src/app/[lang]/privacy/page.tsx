@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary, isLocale } from "@/i18n/dictionaries";
+import { absoluteUrl } from "@/lib/site";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/privacy">)
   const t = getDictionary(lang);
   return {
     title: t.privacy.title,
-    alternates: { canonical: `/${lang}/privacy`, languages: { el: "/el/privacy", en: "/en/privacy" } },
+    alternates: { canonical: absoluteUrl(`/${lang}/privacy`), languages: { el: absoluteUrl("/el/privacy"), en: absoluteUrl("/en/privacy") } },
   };
 }
 

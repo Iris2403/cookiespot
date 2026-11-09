@@ -17,6 +17,20 @@ npm run build && npm start
 | `npm run illustrations` | Re-rasterises product illustrations to WebP (run after changing menu art) |
 | `npm run audit:deps` | `npm audit` for production dependencies |
 
+## Live preview on GitHub Pages
+
+`.github/workflows/pages.yml` publishes a **static preview** to `https://iris2403.github.io/cookiespot/` on every push to `main`.
+
+One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Then push to `main`, or run the workflow from the Actions tab.
+
+The Pages copy is built with `STATIC_EXPORT=1` (`output: "export"`, base path `/cookiespot`). Because there is no server:
+
+- The contact form shows the "please call / Instagram" message instead of sending.
+- `/` always opens the Greek site; the language switch still works.
+- No custom security headers are sent (Pages can't set them).
+
+For the full site, deploy the normal build to a Node host such as Vercel.
+
 ## Stack
 
 - **Next.js 16 (App Router) + React 19 + TypeScript.** Pages are pre-rendered at build time (`/el`, `/en`, `/el/privacy`, `/en/privacy`).

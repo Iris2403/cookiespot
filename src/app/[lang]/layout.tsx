@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Noto_Serif_Display, Commissioner } from "next/font/google";
 import { getDictionary, isLocale, locales } from "@/i18n/dictionaries";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, absoluteUrl } from "@/lib/site";
 import { RevealObserver } from "@/components/RevealObserver";
 import "../globals.css";
 
@@ -53,15 +53,15 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
     description: t.meta.description,
     applicationName: "The Cookie Spot",
     alternates: {
-      canonical: `/${lang}`,
-      languages: { el: "/el", en: "/en", "x-default": "/el" },
+      canonical: absoluteUrl(`/${lang}`),
+      languages: { el: absoluteUrl("/el"), en: absoluteUrl("/en"), "x-default": absoluteUrl("/el") },
     },
     openGraph: {
       type: "website",
       siteName: "The Cookie Spot",
       title: t.meta.title,
       description: t.meta.description,
-      url: `/${lang}`,
+      url: absoluteUrl(`/${lang}`),
       locale: lang === "el" ? "el_GR" : "en_GB",
       alternateLocale: lang === "el" ? ["en_GB"] : ["el_GR"],
     },

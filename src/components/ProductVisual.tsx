@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import type { Product } from "@/content/menu";
+import { asset } from "@/lib/site";
 
 interface Props {
   product: Product;
@@ -22,7 +23,7 @@ interface Props {
  */
 export function ProductVisual({ product, sizes = "(min-width: 1024px) 25vw, (min-width: 640px) 45vw, 90vw", priority, label, crop, className }: Props) {
   if (product.image) {
-    return <Image src={product.image} alt={label ?? ""} fill sizes={sizes} priority={priority} className={className} style={{ objectFit: "cover" }} />;
+    return <Image src={asset(product.image)} alt={label ?? ""} fill sizes={sizes} priority={priority} className={className} style={{ objectFit: "cover" }} />;
   }
   let style: CSSProperties | undefined;
   if (crop) {
@@ -33,8 +34,8 @@ export function ProductVisual({ product, sizes = "(min-width: 1024px) 25vw, (min
   return (
     // eslint-disable-next-line @next/next/no-img-element -- pre-optimised static WebP with its own srcset
     <img
-      src={`/illustrations/${product.slug}-960.webp`}
-      srcSet={`/illustrations/${product.slug}-480.webp 480w, /illustrations/${product.slug}-960.webp 960w`}
+      src={asset(`/illustrations/${product.slug}-960.webp`)}
+      srcSet={`${asset(`/illustrations/${product.slug}-480.webp`)} 480w, ${asset(`/illustrations/${product.slug}-960.webp`)} 960w`}
       sizes={crop ? "(min-width: 960px) 50vw, 100vw" : sizes}
       alt={label ?? ""}
       width={960}

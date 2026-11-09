@@ -1,0 +1,64 @@
+# Publishes a static preview of the site to GitHub Pages on every push to main.
+# One-time setup: repository Settings → Pages → Build and deployment → Source: "GitHub Actions".
+#
+# The Pages copy is fully static: the contact form shows a "call / Instagram" message instead of
+# sending, "/" always opens the Greek site, and no custom security headers are sent. For the full
+# site (contact form, language detection, CSP/HSTS) deploy the normal build to a Node host such as Vercel.
+name: Deploy preview to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      STATIC_EXPORT: "1"
+      BASE_PATH: /${{ github.event.repository.name }}
+      NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Remove server-only routes (not supported by a static export)
+        run: rm -rf src/proxy.ts src/app/api
+      - run: npm run build
+      - name: Add root redirect and disable Jekyll
+        run: |
+          cat > out/index.html <<HTML
+          <!doctype html><html lang="el"><head><meta charset="utf-8">
+          <title>The Cookie Spot</title>
+          <meta http-equiv="refresh" content="0; url=${BASE_PATH}/el/">
+          <link rel="canonical" href="${NEXT_PUBLIC_SITE_URL}/el/">
+          </head><body><a href="${BASE_PATH}/el/">The Cookie Spot</a></body></html>
+          HTML
+          touch out/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

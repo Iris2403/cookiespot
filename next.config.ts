@@ -3,6 +3,14 @@ import type { NextConfig } from "next";
 const isDev = process.env.NODE_ENV !== "production";
 
 /**
+ * STATIC_EXPORT=1 builds a fully static copy (GitHub Pages preview). In that mode there is no
+ * server: no contact API, no language-negotiating proxy and no custom headers (Pages can't set
+ * them). BASE_PATH is the sub-path the site is served from, e.g. "/cookiespot".
+ */
+const staticExport = process.env.STATIC_EXPORT === "1";
+const basePath = staticExport ? process.env.BASE_PATH || "" : "";
+
+/**
  * Content Security Policy.
  * - Pages are statically pre-rendered for speed, so we cannot use per-request nonces.
  *   Next.js injects small inline bootstrap scripts, which requires 'unsafe-inline' for scripts.
@@ -41,11 +49,18 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  ...(staticExport ? { output: "export" as const, trailingSlash: true, basePath } : {}),
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+    NEXT_PUBLIC_STATIC_EXPORT: staticExport ? "1" : "",
+  },
   images: {
+    unoptimized: staticExport,
     formats: ["image/avif", "image/webp"],
     deviceSizes: [420, 640, 828, 1080, 1280, 1600, 2048],
   },
   async headers() {
+    if (staticExport) return [];
     return [
       { source: "/:path*", headers: securityHeaders },
       {

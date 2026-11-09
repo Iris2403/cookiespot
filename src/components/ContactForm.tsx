@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { Locale } from "@/content/menu";
 import { business, INSTAGRAM_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
+import { IS_STATIC_EXPORT } from "@/lib/site";
 import { LIMITS, normalize, validate, type ContactErrors, type ContactField } from "@/lib/contact";
 import { ArrowIcon, InstagramIcon, PhoneIcon } from "./icons";
 
@@ -41,6 +42,13 @@ export function ContactForm({ locale }: { locale: Locale }) {
     if (Object.keys(errs).length) {
       const first = (["name", "email", "message", "consent"] as ContactField[]).find((f) => errs[f]);
       form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+      return;
+    }
+    if (IS_STATIC_EXPORT) {
+      // Static preview (GitHub Pages) has no server to receive messages.
+      setServerMsg(t.contact.errors.unavailable);
+      setStatus("error");
+      requestAnimationFrame(() => statusRef.current?.focus());
       return;
     }
     setStatus("sending");
