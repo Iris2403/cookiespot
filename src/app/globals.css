@@ -527,3 +527,81 @@ address { font-style: normal; }
 .review-slide__author { font-weight: 800; color: var(--brown); font-size: 0.95rem; }
 .review-carousel__nav { display: flex; align-items: center; gap: 14px; justify-content: flex-end; }
 .review-carousel__count { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--muted); }
+
+/* ==========================================================================
+   MOBILE LAYOUT (phones only, < 760px) — a dedicated phone composition:
+   photo-first hero, swipeable rows instead of long stacks, tighter rhythm.
+   Desktop and tablet layouts are untouched.
+   ========================================================================== */
+@media (max-width: 759px) {
+  .section { padding-block: 56px; }
+  .section-head { margin-bottom: 24px; gap: 10px; }
+  .heading-xl, .display-lg { font-size: clamp(1.75rem, 7.4vw, 2.2rem); }
+
+  /* Hero: photo first, then headline and side-by-side buttons */
+  .hero__grid { gap: 22px; padding-block: 14px 36px; }
+  .hero__media { order: -1; width: 100%; padding: 0 0 18px; }
+  .hero__photo { aspect-ratio: 5 / 4; border-radius: 28px; }
+  .hero__photo img { object-position: 50% 30%; }
+  .hero__polaroid { left: auto; right: 10px; bottom: 0; width: 42%; border-width: 5px; rotate: 4deg; }
+  .hero__copy { gap: 16px; }
+  .hero__title { font-size: clamp(2rem, 8.6vw, 2.5rem); }
+  .hero__lead { font-size: 1rem; }
+  .hero__ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hero__ctas .btn { min-height: 50px; padding: 12px 10px; font-size: 0.92rem; }
+  .hero__facts { grid-template-columns: repeat(3, 1fr); margin-top: 0; border-bottom: 1px solid var(--rule); }
+  .hero__facts > div { display: grid; gap: 2px; align-content: start; padding: 12px 8px 12px 0; border-bottom: 0; }
+  .hero__facts > div + div { border-left: 1px solid var(--rule); padding-left: 10px; }
+  .hero__facts dt { font-size: 0.8rem; }
+  .hero__facts dd { text-align: left; font-size: 0.78rem; line-height: 1.35; }
+  .paper-band { height: 64px; }
+  .paper-band::before { background-size: 176px 64px; right: -176px; animation-name: band-scroll-sm; }
+
+  /* Swipe rows: favourites, "more than a cookie", offers */
+  .favs__grid, .bento, .offers__grid {
+    display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin-inline: calc(var(--gutter) * -1); padding: 4px var(--gutter) 12px; scroll-padding-inline: var(--gutter); scrollbar-width: none;
+  }
+  .favs__grid::-webkit-scrollbar, .bento::-webkit-scrollbar, .offers__grid::-webkit-scrollbar { display: none; }
+  .favs__grid > li, .bento > li, .offers__grid > li { flex: 0 0 80%; scroll-snap-align: start; }
+  .fav-card__media { aspect-ratio: 1; }
+  .fav-card__body { padding: 16px; }
+  .fav-card__name { font-size: 1.3rem; min-height: 0; }
+  .fav-card__desc { font-size: 0.9rem; }
+  .bento__photos, .bento__photo { min-height: 190px; }
+  .bento__text { padding: 16px 18px 18px; }
+  .bento__desc { font-size: 0.9rem; }
+  .offer__media { aspect-ratio: 4 / 3; }
+  .offer__body { padding: 16px 18px 18px; }
+  .offer__name { font-size: 1.2rem; }
+  .offer__desc { font-size: 0.9rem; }
+  .offer__badge { font-size: 1.5rem; padding: 4px 12px; }
+
+  /* Menu: tighter cards */
+  .menu-card__main { grid-template-columns: minmax(0, 1fr) 92px; gap: 12px; padding: 12px 12px 12px 14px; }
+  .menu-card__media { width: 92px; }
+  .menu-card__order { right: 112px; bottom: 12px; width: 36px; height: 36px; }
+  .menu-card__name { font-size: 0.98rem; }
+  .menu-card__note { font-size: 0.84rem; }
+
+  /* Story: copy, then a swipeable photo strip */
+  .story__grid { gap: 28px; }
+  .story__title { font-size: clamp(2.6rem, 12vw, 3.4rem); }
+  .story__lead { font-size: 1.02rem; }
+  .story__points li { padding: 12px 0; }
+  .story__photos { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) 8px; scrollbar-width: none; }
+  .story__photos::-webkit-scrollbar { display: none; }
+  .story__photo { flex: 0 0 78%; scroll-snap-align: start; }
+  .story__photo img { aspect-ratio: 4 / 5; object-fit: cover; border-radius: 20px; }
+
+  /* Gallery: compact two-column mosaic */
+  .gallery__grid { grid-auto-rows: 38vw; gap: 8px; }
+  .gallery__btn { border-radius: 16px; }
+
+  /* Reviews & location */
+  .review-slide { min-height: 0; padding: 26px 20px 22px; }
+  .map { min-height: 260px; border-radius: 24px; }
+  .locations__grid { gap: 28px; }
+  .site-footer > .paper-band { margin-bottom: 44px; }
+}
+@keyframes band-scroll-sm { from { transform: translateX(0); } to { transform: translateX(-176px); } }
