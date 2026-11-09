@@ -126,7 +126,7 @@ const en = {
   reviews: {
     eyebrow: "Reviews",
     title: "Don't take our word for it.",
-    lead: "What our customers say about us.",
+    lead: "Take our customers' word instead.",
     google: "All reviews on Google",
     via: "via",
     prev: "Previous review",
@@ -326,7 +326,7 @@ const el: Dictionary = {
   reviews: {
     eyebrow: "Κριτικές",
     title: "Μην πιστεύεις στον λόγο μας.",
-    lead: "Τι λένε για εμάς οι πελάτες.",
+    lead: "Αλλά στο τι λένε οι πελάτες μας.",
     google: "Όλες οι κριτικές στο Google",
     via: "μέσω",
     prev: "Προηγούμενη κριτική",
