@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Locale } from "@/content/menu";
 import { orderUrl } from "@/content/menu";
-import { business, INSTAGRAM_HANDLE, INSTAGRAM_URL, MAPS_DIRECTIONS_URL } from "@/content/business";
+import { business, EFOOD_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL, MAPS_DIRECTIONS_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
 import { Wordmark } from "./Wordmark";
 import { ArrowIcon, InstagramIcon } from "./icons";
@@ -48,6 +48,7 @@ export function SiteFooter({ locale, onHome = true }: { locale: Locale; onHome?:
             <ul>
               <li><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"><InstagramIcon /> {INSTAGRAM_HANDLE}</a></li>
               <li><a href={orderUrl(undefined, locale)} target="_blank" rel="noopener noreferrer">Wolt</a></li>
+              <li><a href={EFOOD_URL} target="_blank" rel="noopener noreferrer">e-food</a></li>
             </ul>
           </div>
         </div>

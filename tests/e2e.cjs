@@ -17,6 +17,8 @@ const ok = (m) => console.log('✓', m);
   const wolt = hrefs.filter(h => h.includes('wolt.com')); assert.ok(wolt.every(h => h.startsWith('https://wolt.com/el/grc/athens/restaurant/cookie-spot') || h.startsWith('https://wolt.com/en/grc/athens/restaurant/cookie-spot')));
   ok(`order links → Wolt store (${wolt.length})`);
   assert.ok(hrefs.includes('tel:+302106983637')); ok('tel link');
+  const efood = hrefs.filter(h => h === 'https://www.e-food.gr/delivery/ampelokipoi/the-cookie-spot'); assert.ok(efood.length >= 3); ok(`e-food links (${efood.length})`);
+  assert.equal(await p.$$eval('text=/Hours as listed on Wolt|Loads Google Maps/', e => e.length), 0); ok('hours/map notes removed');
   // category filter
   await p.click('.menu-tab:has-text("Brookies")');
   assert.equal(await p.$$eval('.menu-sec', g => g.length), 1);

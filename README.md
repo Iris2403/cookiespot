@@ -47,7 +47,7 @@ The design is built from the brand's real touchpoints, taken from the photos sup
 | "We bake it personally" | Printed inside the boxes | Story headline in a hand-lettered face (Caveat), and in the hero photo |
 
 - **Type:**
-  - Roboto Slab for headings: a typewriter-style slab serif with Greek. The logo is custom hand-lettering with no public font; this is the closest match that also covers Greek.
+  - Alegreya for headings: a warm serif with Greek glyphs that sits well beside the hand-lettered logo.
   - Manrope for text and UI.
 - **Sections:**
   1. Hero: the campaign photo in an arch, plus a peach studio shot
@@ -116,6 +116,7 @@ Products use `image` (menu photo) and optionally `photo` (large editorial photo)
 
 - Every "Order" call to action goes through `orderUrl()` in `menu.ts`. It returns the Wolt store URL in the page's language, or the item's `woltUrl` when one is set.
 - The site doesn't call or scrape any Wolt API.
+- **e-food** (`EFOOD_URL` in `src/content/business.ts`) is offered as a second ordering option: in the hero, the product dialog, the location section, the mobile menu, the footer and the JSON-LD. Prices shown on the site come from Wolt; e-food prices may differ, and the menu note says so.
 - Phone ordering and enquiries use `tel:+302106983637` links (header on mobile, sticky bottom bar, location section, contact section).
 - Directions use a Google Maps directions URL. The embedded map is **click-to-load**, so Google is not contacted until the visitor asks for the map.
 

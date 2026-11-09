@@ -1,6 +1,6 @@
 import type { Locale } from "@/content/menu";
 import { categories, products, MENU_LAST_VERIFIED } from "@/content/menu";
-import { business, INSTAGRAM_URL, WOLT_STORE_URL } from "@/content/business";
+import { business, EFOOD_URL, INSTAGRAM_URL, WOLT_STORE_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
 import { absoluteUrl } from "@/lib/site";
 
@@ -37,7 +37,10 @@ export function JsonLd({ locale }: { locale: Locale }) {
       .filter((h) => h.opens && h.closes)
       .map((h) => ({ "@type": "OpeningHoursSpecification", dayOfWeek: `https://schema.org/${DAY_SCHEMA[h.day]}`, opens: h.opens, closes: h.closes })),
     sameAs: [INSTAGRAM_URL],
-    potentialAction: { "@type": "OrderAction", target: WOLT_STORE_URL },
+    potentialAction: [
+      { "@type": "OrderAction", target: WOLT_STORE_URL },
+      { "@type": "OrderAction", target: EFOOD_URL },
+    ],
     hasMenu: {
       "@type": "Menu",
       url: absoluteUrl(`/${locale}#menu`),

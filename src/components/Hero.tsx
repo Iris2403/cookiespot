@@ -1,6 +1,7 @@
 import type { Locale } from "@/content/menu";
 import { orderUrl } from "@/content/menu";
 import { media } from "@/content/media";
+import { EFOOD_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
 import { BrandPhoto } from "./BrandPhoto";
 import { ArrowIcon } from "./icons";
@@ -24,6 +25,10 @@ export function Hero({ locale }: { locale: Locale }) {
             </a>
             <a href="#menu" className="btn btn--outline btn--lg">{t.hero.explore}</a>
           </div>
+          <p className="hero__also">
+            {t.hero.alsoOn}{" "}
+            <a href={EFOOD_URL} className="text-link" target="_blank" rel="noopener noreferrer">e-food <ArrowIcon /></a>
+          </p>
           <dl className="hero__facts">
             {t.hero.facts.map((f) => (
               <div key={f.k}>

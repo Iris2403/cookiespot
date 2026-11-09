@@ -1,6 +1,6 @@
 import type { Locale } from "@/content/menu";
 import { orderUrl } from "@/content/menu";
-import { business, MAPS_DIRECTIONS_URL } from "@/content/business";
+import { business, EFOOD_URL, MAPS_DIRECTIONS_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
 import { OpenStatus, TodayMarker } from "./OpenStatus";
 import { MapEmbed } from "./MapEmbed";
@@ -48,7 +48,6 @@ export function Locations({ locale }: { locale: Locale }) {
                     ))}
                   </tbody>
                 </table>
-                <p className="fineprint">{t.locations.hoursSource}</p>
               </dd>
             </div>
           </dl>
@@ -57,10 +56,11 @@ export function Locations({ locale }: { locale: Locale }) {
             <a href={MAPS_DIRECTIONS_URL} className="btn btn--dark" target="_blank" rel="noopener noreferrer"><PinIcon /> {t.locations.directions}</a>
             <a href={`tel:${business.phone.e164}`} className="btn btn--outline"><PhoneIcon /> {t.locations.call}</a>
             <a href={orderUrl(undefined, locale)} className="btn btn--primary" target="_blank" rel="noopener noreferrer">{t.locations.order} <ArrowIcon /></a>
+            <a href={EFOOD_URL} className="btn btn--outline" target="_blank" rel="noopener noreferrer">{t.locations.efood} <ArrowIcon /></a>
           </div>
         </div>
         <div className="locations__map" data-reveal>
-          <MapEmbed labels={{ showMap: t.locations.showMap, mapNote: t.locations.mapNote, mapTitle: t.locations.mapTitle }} />
+          <MapEmbed labels={{ showMap: t.locations.showMap, mapTitle: t.locations.mapTitle }} />
         </div>
       </div>
     </section>

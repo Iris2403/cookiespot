@@ -12,6 +12,7 @@ import type { Locale } from "@/content/menu";
 import { categories, discountPercent, formatPrice, getProduct, orderUrl, MENU_LAST_VERIFIED } from "@/content/menu";
 import { getDictionary } from "@/i18n/dictionaries";
 import { ProductVisual } from "./ProductVisual";
+import { EFOOD_URL } from "@/content/business";
 import { ArrowIcon, CloseIcon } from "./icons";
 
 interface Ctx {
@@ -141,9 +142,12 @@ export function ProductDialogProvider({ locale, children }: { locale: Locale; ch
                     <span className="price__pending">{t.menu.seePrice}</span>
                   )}
                 </div>
-                <a href={orderUrl(product, locale)} className="btn btn--primary btn--lg" target="_blank" rel="noopener noreferrer">
-                  {t.menu.order} <ArrowIcon />
-                </a>
+                <div className="product-dialog__ctas">
+                  <a href={orderUrl(product, locale)} className="btn btn--primary btn--lg" target="_blank" rel="noopener noreferrer">
+                    {t.menu.order} <ArrowIcon />
+                  </a>
+                  <a href={EFOOD_URL} className="btn btn--outline" target="_blank" rel="noopener noreferrer">e-food</a>
+                </div>
               </div>
               <p className="fineprint">
                 {t.menu.verified}: <time dateTime={MENU_LAST_VERIFIED}>{MENU_LAST_VERIFIED}</time>. {t.menu.verifiedNote}

@@ -8,6 +8,8 @@
 
 export const WOLT_STORE_URL = "https://wolt.com/el/grc/athens/restaurant/cookie-spot";
 export const WOLT_STORE_URL_EN = "https://wolt.com/en/grc/athens/restaurant/cookie-spot";
+/** Second ordering platform (supplied by the owner). Prices there may differ from Wolt. */
+export const EFOOD_URL = "https://www.e-food.gr/delivery/ampelokipoi/the-cookie-spot";
 export const INSTAGRAM_URL = "https://www.instagram.com/thecookiespotathens/";
 export const INSTAGRAM_HANDLE = "@thecookiespotathens";
 export const GOOGLE_PROFILE_URL = "https://share.google/j63nFPKLzOhn16pUl";

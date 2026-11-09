@@ -6,7 +6,7 @@ import { MAPS_EMBED_URL } from "@/content/business";
 import { PinIcon } from "./icons";
 
 /** Click-to-load map: no third-party request until the visitor asks for it. */
-export function MapEmbed({ labels }: { labels: { showMap: string; mapNote: string; mapTitle: string } }) {
+export function MapEmbed({ labels }: { labels: { showMap: string; mapTitle: string } }) {
   const [on, setOn] = useState(false);
   return (
     <div className="map">
@@ -24,7 +24,6 @@ export function MapEmbed({ labels }: { labels: { showMap: string; mapNote: strin
           <button type="button" className="btn btn--dark" onClick={() => setOn(true)}>
             <PinIcon /> {labels.showMap}
           </button>
-          <p className="map__note">{labels.mapNote}</p>
         </div>
       )}
     </div>
