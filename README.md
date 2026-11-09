@@ -39,7 +39,7 @@ The design is built from the brand's real touchpoints, taken from the photos sup
 | Element | Source | Use on the site |
 | --- | --- | --- |
 | Hand-lettered logo | Profile picture / boxes | Traced to vector: `public/brand/logo.svg` and `logo-white.svg`. Used in the header, footer, favicon and sharing image |
-| Logo-printed wrapping paper | Instagram product shots | `public/brand/pattern.svg`, used for the band under the hero, the footer edge and the mobile menu |
+| Logo-printed wrapping paper | Instagram product shots | `public/brand/pattern.svg` (mobile menu) and `pattern-band.svg` (one row with equal space above and below), used for the band under the hero and the footer edge |
 | Box orange `#ED7033` | Packaging | Buttons and accents. Button text is deep brown `#2A1409` for contrast |
 | Logo brown `#542B16` | Logo | Text colour |
 | Studio peach `#FCBD8E` | Wolt studio shots | Offers section and bento tiles, so the studio photos blend in |
@@ -47,7 +47,7 @@ The design is built from the brand's real touchpoints, taken from the photos sup
 | "We bake it personally" | Printed inside the boxes | Story headline in a hand-lettered face (Caveat), and in the hero photo |
 
 - **Type:**
-  - Alegreya for headings: a warm serif with Greek glyphs that sits well beside the hand-lettered logo.
+  - Roboto Slab for headings: a typewriter-style slab serif with Greek. The logo is custom hand-lettering with no public font; this is the closest match that also covers Greek.
   - Manrope for text and UI.
 - **Sections:**
   1. Hero: the campaign photo in an arch, plus a peach studio shot

@@ -1,17 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Alegreya, Caveat, Manrope } from "next/font/google";
+import { Caveat, Manrope, Roboto_Slab } from "next/font/google";
 import { getDictionary, isLocale, locales } from "@/i18n/dictionaries";
 import { SITE_URL, absoluteUrl } from "@/lib/site";
 import { RevealObserver } from "@/components/RevealObserver";
 import "../globals.css";
 
-// Headings: Alegreya — warm, slightly calligraphic serif (Greek included) that sits well beside
-// the hand-lettered logo.
-const display = Alegreya({
+// Headings: Roboto Slab — a typewriter-style slab serif, the closest match (with Greek) to the
+// hand-lettered logo, whose letterforms are a soft typewriter slab. The logo itself is custom.
+const display = Roboto_Slab({
   subsets: ["latin", "greek"],
-  weight: ["700", "800"],
-  style: ["normal", "italic"],
+  weight: ["700"],
   variable: "--font-display",
   display: "optional",
 });
