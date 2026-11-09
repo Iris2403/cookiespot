@@ -1,5 +1,6 @@
+import { OrderLink } from "./OrderChooser";
 import type { Locale } from "@/content/menu";
-import { categories, displayName, formatPrice, getProduct, orderUrl } from "@/content/menu";
+import { categories, displayName, formatPrice, getProduct } from "@/content/menu";
 import { getDictionary } from "@/i18n/dictionaries";
 import { ProductVisual } from "./ProductVisual";
 import { OpenProductButton } from "./ProductDialog";
@@ -37,9 +38,9 @@ export function FeaturedCookies({ locale }: { locale: Locale }) {
                   {p.description && <p className="fav-card__desc">{p.description[locale]}</p>}
                   <div className="fav-card__foot">
                     <span className="fav-card__price">{p.price != null ? formatPrice(p.price, locale) : t.menu.seePrice}</span>
-                    <a href={orderUrl(p, locale)} className="btn btn--primary btn--sm" target="_blank" rel="noopener noreferrer" aria-label={`${t.nav.order}: ${p.name} (Wolt)`}>
+                    <OrderLink locale={locale} className="btn btn--primary btn--sm" label={`${t.nav.order}: ${p.name}`}>
                       {t.nav.order} <ArrowIcon />
-                    </a>
+                    </OrderLink>
                   </div>
                 </div>
               </li>

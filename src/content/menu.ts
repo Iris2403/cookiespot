@@ -91,7 +91,7 @@ export const categories: Category[] = [
   { id: "coffee", label: { el: "Καφέδες", en: "Coffee" }, woltLabel: "ΚΑΦΕΔΕΣ", note: { el: "Περιλαμβάνεται 0,05 € περιβαλλοντικό τέλος.", en: "Includes a €0.05 environmental fee." } },
   { id: "cold-drinks", label: { el: "Κρύα ροφήματα", en: "Cold drinks" }, woltLabel: "ΚΡΥΑ ΡΟΦΗΜΑΤΑ" },
   { id: "drinks", label: { el: "Ροφήματα", en: "Drinks" }, woltLabel: "ΡΟΦΗΜΑΤΑ" },
-  { id: "combos", label: { el: "Combos & προσφορές", en: "Combos & offers" }, woltLabel: "COMBOS", blurb: { el: "Η τελική τιμή διαμορφώνεται βάσει των επιλογών σου στη Wolt.", en: "The final price depends on your choices on Wolt." } },
+  { id: "combos", label: { el: "Combos & προσφορές", en: "Combos & offers" }, woltLabel: "COMBOS" },
 ];
 
 const T = (name: string) => `/images/thumbs/${name}.webp`;

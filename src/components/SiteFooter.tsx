@@ -1,3 +1,4 @@
+import { OrderLink } from "./OrderChooser";
 import Link from "next/link";
 import type { Locale } from "@/content/menu";
 import { orderUrl } from "@/content/menu";
@@ -15,7 +16,7 @@ export function SiteFooter({ locale, onHome = true }: { locale: Locale; onHome?:
       <div className="container">
         <div className="site-footer__cta">
           <p className="site-footer__big">{t.hero.titleA} <em>{t.hero.titleB}</em></p>
-          <a href={orderUrl(undefined, locale)} className="btn btn--primary btn--lg" target="_blank" rel="noopener noreferrer">{t.footer.orderWolt} <ArrowIcon /></a>
+          <OrderLink locale={locale} className="btn btn--primary btn--lg">{t.footer.orderWolt} <ArrowIcon /></OrderLink>
         </div>
         <div className="site-footer__grid">
           <div>

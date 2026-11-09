@@ -2,10 +2,9 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/content/menu";
-import { orderUrl } from "@/content/menu";
-import { EFOOD_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
 import { Wordmark } from "./Wordmark";
+import { OrderLink } from "./OrderChooser";
 import { ArrowIcon } from "./icons";
 
 export function SiteHeader({ locale, onHome = true }: { locale: Locale; onHome?: boolean }) {
@@ -115,10 +114,10 @@ export function SiteHeader({ locale, onHome = true }: { locale: Locale; onHome?:
             <span aria-hidden="true">{other.toUpperCase()}</span>
             <span className="sr-only">{t.nav.switchTo}</span>
           </Link>
-          <a href={orderUrl(undefined, locale)} className="btn btn--primary btn--sm site-header__order" target="_blank" rel="noopener noreferrer">
+          <OrderLink locale={locale} className="btn btn--primary btn--sm site-header__order">
             {t.nav.order}
             <ArrowIcon />
-          </a>
+          </OrderLink>
           <button
             ref={toggleRef}
             type="button"
@@ -145,12 +144,9 @@ export function SiteHeader({ locale, onHome = true }: { locale: Locale; onHome?:
           </ul>
         </nav>
         <div className="mobile-menu__foot">
-          <a href={orderUrl(undefined, locale)} className="btn btn--primary btn--lg" target="_blank" rel="noopener noreferrer">
+          <OrderLink locale={locale} className="btn btn--primary btn--lg">
             {t.nav.order} <ArrowIcon />
-          </a>
-          <a href={EFOOD_URL} className="btn btn--outline" target="_blank" rel="noopener noreferrer">
-            {t.nav.efood}
-          </a>
+          </OrderLink>
           <Link href={`/${other}`} hrefLang={other} lang={other} className="btn btn--ghost">
             {t.nav.switchTo}
           </Link>

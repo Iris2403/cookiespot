@@ -17,7 +17,13 @@ const ok = (m) => console.log('✓', m);
   const wolt = hrefs.filter(h => h.includes('wolt.com')); assert.ok(wolt.every(h => h.startsWith('https://wolt.com/el/grc/athens/restaurant/cookie-spot') || h.startsWith('https://wolt.com/en/grc/athens/restaurant/cookie-spot')));
   ok(`order links → Wolt store (${wolt.length})`);
   assert.ok(hrefs.includes('tel:+302106983637')); ok('tel link');
-  const efood = hrefs.filter(h => h === 'https://www.e-food.gr/delivery/ampelokipoi/the-cookie-spot'); assert.ok(efood.length >= 3); ok(`e-food links (${efood.length})`);
+  const efood = hrefs.filter(h => h === 'https://www.e-food.gr/delivery/ampelokipoi/the-cookie-spot'); assert.ok(efood.length >= 1); ok(`e-food links (${efood.length})`);
+  await p.click('.hero .btn--primary'); await p.waitForSelector('dialog.order-chooser[open]');
+  const opts = await p.$$eval('dialog.order-chooser[open] a', as => as.map(a => a.href));
+  assert.ok(opts.some(h => h.includes('wolt.com')) && opts.some(h => h.includes('e-food.gr'))); ok('order button opens Wolt / e-food chooser');
+  await p.keyboard.press('Escape'); await p.waitForSelector('dialog.order-chooser:not([open])', { state: 'attached' });
+  assert.equal(await p.$$eval('text=/may differ|μπορεί να διαφέρουν|διαμορφώνεται/', e => e.length), 0); ok('no price disclaimers');
+  const r1 = await p.textContent('.review-slide blockquote'); await p.click('.review-carousel__nav button:last-child'); assert.notEqual(r1, await p.textContent('.review-slide blockquote')); ok('reviews carousel arrows');
   assert.equal(await p.$$eval('text=/Hours as listed on Wolt|Loads Google Maps/', e => e.length), 0); ok('hours/map notes removed');
   // category filter
   await p.click('.menu-tab:has-text("Brookies")');

@@ -1,11 +1,12 @@
 "use client";
+import { OrderLink } from "./OrderChooser";
 /**
  * The full menu: category tabs + product cards with the real Wolt product photos.
  * Every card opens the product dialog; the round button orders on Wolt.
  */
 import { useEffect, useRef, useState } from "react";
 import type { CategoryId, Locale, Product } from "@/content/menu";
-import { categories, discountPercent, displayName, formatPrice, orderUrl, products, MENU_LAST_VERIFIED } from "@/content/menu";
+import { categories, discountPercent, displayName, formatPrice, products } from "@/content/menu";
 import { getDictionary } from "@/i18n/dictionaries";
 import { useProductDialog } from "./ProductDialog";
 import { ProductVisual } from "./ProductVisual";
@@ -82,9 +83,6 @@ export function MenuExplorer({ locale }: { locale: Locale }) {
         })}
       </div>
 
-      <p className="fineprint menu-verified">
-        {t.menu.verified}: <time dateTime={MENU_LAST_VERIFIED}>{MENU_LAST_VERIFIED}</time>. {t.menu.verifiedNote}
-      </p>
     </div>
   );
 }
@@ -105,7 +103,6 @@ export function MenuCard({ product, locale }: { product: Product; locale: Locale
             <span className="menu-card__price">
               {product.price != null ? (
                 <>
-                  {product.priceFrom && <span className="menu-card__from">{t.menu.from} </span>}
                   {formatPrice(product.price, locale)}
                 </>
               ) : (
@@ -123,9 +120,9 @@ export function MenuCard({ product, locale }: { product: Product; locale: Locale
           <ProductVisual product={product} sizes="(min-width: 1024px) 140px, 112px" />
         </span>
       </button>
-      <a href={orderUrl(product, locale)} className="menu-card__order" target="_blank" rel="noopener noreferrer" aria-label={`${t.nav.order}: ${name} (Wolt)`}>
+      <OrderLink locale={locale} className="menu-card__order" label={`${t.nav.order}: ${name}`}>
         <ArrowIcon />
-      </a>
+      </OrderLink>
     </li>
   );
 }

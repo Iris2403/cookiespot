@@ -1,7 +1,7 @@
 "use client";
+import { OrderLink } from "./OrderChooser";
 import { useEffect, useState } from "react";
 import type { Locale } from "@/content/menu";
-import { orderUrl } from "@/content/menu";
 import { business } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
 import { ArrowIcon, PhoneIcon } from "./icons";
@@ -31,9 +31,9 @@ export function MobileOrderBar({ locale }: { locale: Locale }) {
       <a href={`tel:${business.phone.e164}`} className="btn btn--ghost mobile-bar__call" aria-label={`${t.mobileBar.call} ${business.phone.display}`}>
         <PhoneIcon />
       </a>
-      <a href={orderUrl(undefined, locale)} className="btn btn--primary mobile-bar__order" target="_blank" rel="noopener noreferrer">
+      <OrderLink locale={locale} className="btn btn--primary mobile-bar__order">
         {t.mobileBar.order} <ArrowIcon />
-      </a>
+      </OrderLink>
     </div>
   );
 }

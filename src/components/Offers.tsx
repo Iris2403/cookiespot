@@ -1,5 +1,6 @@
+import { OrderLink } from "./OrderChooser";
 import type { Locale } from "@/content/menu";
-import { discountPercent, displayName, formatPrice, orderUrl, productsByCategory } from "@/content/menu";
+import { discountPercent, displayName, formatPrice, productsByCategory } from "@/content/menu";
 import { getDictionary } from "@/i18n/dictionaries";
 import { ProductVisual } from "./ProductVisual";
 import { OpenProductButton } from "./ProductDialog";
@@ -41,20 +42,18 @@ export function Offers({ locale }: { locale: Locale }) {
                   {p.description && <p className="offer__desc">{p.description[locale]}</p>}
                   <div className="offer__foot">
                     <p className="offer__price">
-                      {p.priceFrom && <small>{t.menu.from}</small>}
                       {p.price != null && <span>{formatPrice(p.price, locale)}</span>}
                       {p.compareAtPrice && <s aria-label={`${t.menu.was} ${formatPrice(p.compareAtPrice, locale)}`}>{formatPrice(p.compareAtPrice, locale)}</s>}
                     </p>
-                    <a href={orderUrl(p, locale)} className="btn btn--primary btn--sm" target="_blank" rel="noopener noreferrer" aria-label={`${t.offers.cta}: ${p.name}`}>
+                    <OrderLink locale={locale} className="btn btn--primary btn--sm" label={`${t.offers.cta}: ${p.name}`}>
                       {t.offers.cta} <ArrowIcon />
-                    </a>
+                    </OrderLink>
                   </div>
                 </div>
               </li>
             );
           })}
         </ul>
-        <p className="fineprint">{t.offers.disclaimer}</p>
       </div>
     </section>
   );

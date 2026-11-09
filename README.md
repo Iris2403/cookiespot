@@ -116,7 +116,7 @@ Products use `image` (menu photo) and optionally `photo` (large editorial photo)
 
 - Every "Order" call to action goes through `orderUrl()` in `menu.ts`. It returns the Wolt store URL in the page's language, or the item's `woltUrl` when one is set.
 - The site doesn't call or scrape any Wolt API.
-- **e-food** (`EFOOD_URL` in `src/content/business.ts`) is offered as a second ordering option: in the hero, the product dialog, the location section, the mobile menu, the footer and the JSON-LD. Prices shown on the site come from Wolt; e-food prices may differ, and the menu note says so.
+- **Ordering:** every "Order" button opens one chooser with **Wolt** and **e-food** (`src/components/OrderChooser.tsx`; URLs in `src/content/business.ts`). Without JavaScript the buttons link straight to Wolt. Prices are identical on both platforms.
 - Phone ordering and enquiries use `tel:+302106983637` links (header on mobile, sticky bottom bar, location section, contact section).
 - Directions use a Google Maps directions URL. The embedded map is **click-to-load**, so Google is not contacted until the visitor asks for the map.
 
@@ -166,7 +166,7 @@ Also recommended:
 - **Combos:** prices depend on the cookies chosen, so they are shown as "from".
 - **Address and phone:** from the Wolt and Tripadvisor listings.
 - **Hours:** from the Wolt listing. `business.verifiedAgainstGoogleProfile` is `false`. Confirm the hours against the Google Business Profile, then flip it.
-- **Reviews:** no review text could be verified, so none is quoted. The section links to the live Google and Wolt reviews. Add genuine quotes to `src/content/reviews.ts` (author, date, source URL) and they render automatically.
+- **Reviews:** a carousel of Google reviews from `src/content/reviews.ts`. It currently holds 2 short Google quotes republished by Restaurant Guru, with no reviewer names. Add full reviews copied word for word from Google Maps (author, date, rating) and they appear automatically, with arrows.
 - **Not on the site:**
   - Cookie Dippers: not in Wolt's current categories.
   - Strawberry cookie and the frosted cookie cake: seen on Instagram but not on Wolt. The strawberry cookie appears only as a gallery photo.

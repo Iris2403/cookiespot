@@ -1,16 +1,24 @@
+"use client";
+/**
+ * Google reviews carousel: one review at a time with previous/next arrows (keyboard and swipe
+ * friendly), plus a link to all reviews on Google Maps. Shows only genuine reviews from
+ * content/reviews.ts — no ratings or counts are added.
+ */
+import { useRef, useState } from "react";
 import type { Locale } from "@/content/menu";
 import { reviews } from "@/content/reviews";
-import { MAPS_SEARCH_URL, WOLT_STORE_URL, WOLT_STORE_URL_EN } from "@/content/business";
+import { MAPS_SEARCH_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
-import { ExternalIcon } from "./icons";
+import { ChevronIcon, ExternalIcon, StarIcon } from "./icons";
 
-/**
- * Social proof without fabrication: renders verified quotes from content/reviews.ts when present,
- * and always links to the live review pages. No ratings are shown because they change and
- * cannot be verified at build time.
- */
 export function Reviews({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
+  const [i, setI] = useState(0);
+  const touch = useRef<number | null>(null);
+  const n = reviews.length;
+  const go = (d: number) => setI((x) => (x + d + n) % n);
+  const r = reviews[i];
+
   return (
     <section className="reviews section" aria-labelledby="reviews-title">
       <div className="container reviews__inner">
@@ -18,36 +26,56 @@ export function Reviews({ locale }: { locale: Locale }) {
           <p className="eyebrow">{t.reviews.eyebrow}</p>
           <h2 id="reviews-title" className="display-lg">{t.reviews.title}</h2>
           <p className="lead">{t.reviews.lead}</p>
+          <a href={MAPS_SEARCH_URL} className="text-link" target="_blank" rel="noopener noreferrer">
+            {t.reviews.google} <ExternalIcon />
+          </a>
         </div>
 
-        {reviews.length > 0 && (
-          <ul className="reviews__list">
-            {reviews.map((r) => (
-              <li key={`${r.source}-${r.author}-${r.date}`} className="review-card" data-reveal>
-                <blockquote lang={r.lang}>
-                  <p>“{r.text}”</p>
-                </blockquote>
-                <p className="review-card__meta">
-                  <span>{r.author}</span> · <time dateTime={r.date}>{r.date}</time> ·{" "}
-                  <a href={r.url} target="_blank" rel="noopener noreferrer">{t.reviews.source}: {r.source}</a>
-                </p>
-              </li>
-            ))}
-          </ul>
+        {n > 0 && (
+          <div
+            className="review-carousel"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label={t.reviews.eyebrow}
+            data-reveal
+            onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
+            onTouchEnd={(e) => {
+              if (touch.current == null) return;
+              const dx = e.changedTouches[0].clientX - touch.current;
+              if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+              touch.current = null;
+            }}
+          >
+            <figure className="review-slide" key={i} aria-live="polite">
+              <span className="review-slide__mark" aria-hidden="true">“</span>
+              {r.rating && (
+                <span className="review-slide__stars" aria-label={`${r.rating}/5`}>
+                  {Array.from({ length: r.rating }, (_, k) => <StarIcon key={k} />)}
+                </span>
+              )}
+              <blockquote lang={r.lang}>
+                <p>{r.text}</p>
+              </blockquote>
+              <figcaption className="review-slide__meta">
+                {r.author && <span className="review-slide__author">{r.author}</span>}
+                <span>
+                  {t.reviews.source}:{" "}
+                  <a href={r.url} target="_blank" rel="noopener noreferrer" className="link">
+                    {r.source}{r.via ? ` (${t.reviews.via} ${r.via})` : ""}
+                  </a>
+                  {r.date ? ` · ${r.date}` : ""}
+                </span>
+              </figcaption>
+            </figure>
+            {n > 1 && (
+              <div className="review-carousel__nav">
+                <button type="button" className="icon-btn" onClick={() => go(-1)} aria-label={t.reviews.prev}><ChevronIcon dir="left" /></button>
+                <span className="review-carousel__count" aria-hidden="true">{i + 1} / {n}</span>
+                <button type="button" className="icon-btn" onClick={() => go(1)} aria-label={t.reviews.next}><ChevronIcon /></button>
+              </div>
+            )}
+          </div>
         )}
-
-        <div className="reviews__links" data-reveal>
-          <a href={MAPS_SEARCH_URL} className="review-link" target="_blank" rel="noopener noreferrer">
-            <span className="review-link__quote" aria-hidden="true">“</span>
-            <span className="review-link__label">{t.reviews.google}</span>
-            <ExternalIcon />
-          </a>
-          <a href={locale === "en" ? WOLT_STORE_URL_EN : WOLT_STORE_URL} className="review-link review-link--alt" target="_blank" rel="noopener noreferrer">
-            <span className="review-link__quote" aria-hidden="true">“</span>
-            <span className="review-link__label">{t.reviews.wolt}</span>
-            <ExternalIcon />
-          </a>
-        </div>
       </div>
     </section>
   );

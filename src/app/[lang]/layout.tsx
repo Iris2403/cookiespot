@@ -4,6 +4,7 @@ import { Alegreya, Caveat, Manrope } from "next/font/google";
 import { getDictionary, isLocale, locales } from "@/i18n/dictionaries";
 import { SITE_URL, absoluteUrl } from "@/lib/site";
 import { RevealObserver } from "@/components/RevealObserver";
+import { OrderChooser } from "@/components/OrderChooser";
 import "../globals.css";
 
 // Headings: Alegreya — warm, slightly calligraphic serif (Greek included) that sits well beside
@@ -80,6 +81,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       <body>
         <a className="skip-link" href="#main">{t.skip}</a>
         {children}
+        <OrderChooser locale={lang} />
         <RevealObserver />
       </body>
     </html>

@@ -1,6 +1,6 @@
+import { OrderLink } from "./OrderChooser";
 import type { Locale } from "@/content/menu";
-import { orderUrl } from "@/content/menu";
-import { business, EFOOD_URL, MAPS_DIRECTIONS_URL } from "@/content/business";
+import { business, MAPS_DIRECTIONS_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
 import { OpenStatus, TodayMarker } from "./OpenStatus";
 import { MapEmbed } from "./MapEmbed";
@@ -55,8 +55,7 @@ export function Locations({ locale }: { locale: Locale }) {
           <div className="locations__ctas">
             <a href={MAPS_DIRECTIONS_URL} className="btn btn--dark" target="_blank" rel="noopener noreferrer"><PinIcon /> {t.locations.directions}</a>
             <a href={`tel:${business.phone.e164}`} className="btn btn--outline"><PhoneIcon /> {t.locations.call}</a>
-            <a href={orderUrl(undefined, locale)} className="btn btn--primary" target="_blank" rel="noopener noreferrer">{t.locations.order} <ArrowIcon /></a>
-            <a href={EFOOD_URL} className="btn btn--outline" target="_blank" rel="noopener noreferrer">{t.locations.efood} <ArrowIcon /></a>
+            <OrderLink locale={locale} className="btn btn--primary">{t.locations.order} <ArrowIcon /></OrderLink>
           </div>
         </div>
         <div className="locations__map" data-reveal>
