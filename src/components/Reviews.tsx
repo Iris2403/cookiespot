@@ -51,7 +51,7 @@ export function Reviews({ locale }: { locale: Locale }) {
               <span className="review-slide__stars" role="img" aria-label={`${r.rating}/5`}>
                 {Array.from({ length: r.rating }, (_, k) => <StarIcon key={k} />)}
               </span>
-              <blockquote lang={r.lang} className={r.text.length > 260 ? "is-long" : undefined}>
+              <blockquote lang={r.lang}>
                 <p>{r.text}</p>
               </blockquote>
               <figcaption className="review-slide__meta">

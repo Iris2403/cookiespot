@@ -517,8 +517,8 @@ address { font-style: normal; }
 .review-slide__mark { position: absolute; top: 4px; right: 26px; font-family: var(--serif); font-weight: 800; font-size: 5rem; line-height: 1; color: var(--peach); }
 .review-slide__stars { display: flex; gap: 2px; color: var(--orange); }
 .review-slide__stars svg { fill: currentColor; }
-.review-slide blockquote { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(1.15rem, 2vw, 1.4rem); line-height: 1.45; white-space: pre-line; }
-.review-slide blockquote.is-long { font-size: clamp(1rem, 1.5vw, 1.12rem); font-family: var(--sans); font-weight: 500; line-height: 1.6; }
+/* Same face, size and regular weight for every review; only the reviewer's name is bold. */
+.review-slide blockquote { margin: 0; font-family: var(--sans); font-weight: 400; font-size: clamp(1rem, 1.5vw, 1.12rem); line-height: 1.65; white-space: pre-line; }
 .review-slide__meta { display: grid; gap: 2px; font-size: 0.86rem; color: var(--muted); }
 .review-slide__author { font-weight: 800; color: var(--brown); font-size: 0.95rem; }
 .review-carousel__nav { display: flex; align-items: center; gap: 14px; justify-content: flex-end; }
