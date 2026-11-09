@@ -13,6 +13,7 @@ export function SiteFooter({ locale, onHome = true }: { locale: Locale; onHome?:
   const a = business.address;
   return (
     <footer className="site-footer">
+      <div className="paper-band paper-band--reverse" aria-hidden="true" />
       <div className="container">
         <div className="site-footer__cta">
           <p className="site-footer__big">{t.hero.titleA} <em>{t.hero.titleB}</em></p>
