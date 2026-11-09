@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n/dictionaries";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Hero } from "@/components/Hero";
-import { Marquee } from "@/components/Marquee";
 import { FeaturedCookies } from "@/components/FeaturedCookies";
 import { MoreThanCookies } from "@/components/MoreThanCookies";
 import { MenuExplorer } from "@/components/MenuExplorer";
@@ -26,17 +25,14 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
       <SiteHeader locale={lang} />
       <main id="main">
         <Hero locale={lang} />
-        <Marquee items={t.marquee} />
         <FeaturedCookies locale={lang} />
         <section id="menu" className="menu section" aria-labelledby="menu-title">
           <div className="container">
-            <div className="section-head section-head--split" data-reveal>
-              <p className="eyebrow">{t.menu.eyebrow}</p>
-              <div>
-                <h2 id="menu-title" className="display-lg">{t.menu.title}</h2>
-                <p className="lead">{t.menu.lead}</p>
-              </div>
-            </div>
+            <header className="section-head section-head--center" data-reveal>
+              <p className="kicker">{t.menu.eyebrow}</p>
+              <h2 id="menu-title" className="heading-xl">{t.menu.title}</h2>
+              <p className="lead">{t.menu.lead}</p>
+            </header>
             <MenuExplorer locale={lang} />
           </div>
         </section>

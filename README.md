@@ -30,36 +30,35 @@ The Pages copy is built with `STATIC_EXPORT=1` (`output: "export"`, base path `/
 
 For the full site, deploy the normal build to a Node host such as Vercel.
 
-## Design system (strictly 2D)
+## Design system (warm editorial, strictly 2D)
 
-No Three.js, WebGL, 3D models, perspective, lighting or fake-depth effects. Motion is CSS transforms and opacity plus small `IntersectionObserver`/`requestAnimationFrame` scripts, with no animation library. Everything respects `prefers-reduced-motion`.
+No Three.js, WebGL, 3D models, perspective or fake-depth effects. Motion is CSS plus small `IntersectionObserver` scripts, with no animation library. All motion respects `prefers-reduced-motion`.
 
+- **Feel:** like a premium bakery magazine.
+  - Cream and white pages with generous space.
+  - Thin hairline rules instead of boxes.
+  - Orange used as an accent, not as a background.
 - **Colours:**
-  - Brand: chocolate `#3D2618`, orange `#ED7033`, white.
-  - Supporting colours, used sparingly: vanilla `#FFF8EF`, biscuit `#E9D8C5`, pistachio `#A9B68B`, strawberry `#E8B8A5`.
-  - White text never sits on orange (contrast). Small orange text on light backgrounds uses `#A84413`.
+  - Main: chocolate `#3D2618` for text and the footer; cream `#FFF8EF` and white for pages.
+  - Accent: orange `#ED7033` for buttons, the hero disc and one feature tile. Italic orange headline accents use `#C9551C` (large text only); small orange text uses `#A84413`.
+  - Biscuit `#E9D8C5` for the story and contact sections. Pistachio and strawberry only as light tints.
 - **Type:**
-  - Syne 800 for uppercase display headings. It is contemporary, confident and includes Greek glyphs.
-  - Commissioner for body and UI text.
-- **Graphic language:**
-  - Chocolate outlines and flat offset "sticker" shadows.
-  - Round stickers and pill buttons, a wavy edge out of the hero, and a marquee band.
+  - Noto Serif Display, light weights with italics, for headings. It is high-contrast, editorial, and has Greek glyphs.
+  - Manrope for text and UI.
+- **Imagery without photos:**
+  - Fine-line ink drawings (`src/components/LineArt.tsx`) are used as ornaments, the way a printed bakery menu uses drawings. They never pose as photographs, and there are no placeholder boxes.
+  - When authorised photos are added, they appear automatically: products via `image` in `menu.ts`; hero and shop via `media.ts`; gallery via `gallery.ts`. The gallery section replaces the Instagram band as soon as it has photos.
 - **Sections:**
-  1. Orange campaign hero
-  2. Featured cookies (carousel)
-  3. Menu: a different layout per group: feature, grid, landscape, chocolate panel, pistachio band, strawberry carousel and a drinks menu board
-  4. "More than just a cookie": a sticky stage whose background colour and image change per category as you scroll
-  5. "We bake it personally" story
-  6. Offers
-  7. Gallery and lightbox
+  1. Hero: serif headline, orange disc with an ink drawing, and a facts strip
+  2. House favourites: a numbered list
+  3. Menu: printed-menu rows with dotted price leaders and an italic note on each item
+  4. "More than just a cookie": chapter grid
+  5. "We bake it personally" story, with a drop-cap lead
+  6. Offers as coupons
+  7. Instagram band, which becomes the gallery once photos exist
   8. Reviews
   9. Location
   10. Contact and footer
-- **Interactions:**
-  - Sticky header that changes from orange to white on scroll, with the current section highlighted.
-  - Animated mobile menu and a sticky mobile order bar.
-  - Hover reveals extra product info on mouse devices and always shows it on touch.
-  - Accessible `<dialog>` product view with shareable `#p/<slug>` links.
 
 ## Stack
 
@@ -92,19 +91,17 @@ Edit `src/content/menu.ts`. That is the only place prices live; every card, dial
 - Add `image: "/images/products/<slug>.webp"` once you have **authorised product photography**. `next/image` then serves AVIF/WebP in responsive sizes and replaces the "Photo coming soon" placeholder.
 - Update `MENU_LAST_VERIFIED`. It is shown to visitors.
 
-### Photography (placeholders until real photos are added)
+### Photography
 
-The brand's photos (Instagram, Google, the shop, packaging) could not be accessed from the build environment. **No stock, AI-generated or illustrated "product photos" are used.** Every image position is a `PhotoSlot` (`src/components/PhotoSlot.tsx`): a flat 2D brand graphic with a visible **"Photo coming soon / Φωτογραφία σύντομα"** badge.
+The brand's photos (Instagram, Google, the shop, packaging) could not be accessed from the build environment, so the site is designed to look finished without them. It uses ink drawings, typography and colour. **No stock or generated "product photos" are used.**
 
-To add real photography, use only images owned or authorised by The Cookie Spot. WebP/AVIF/JPEG at about 1600px is ideal; `next/image` resizes them.
+To add real photography, use only images owned or authorised by The Cookie Spot. WebP/AVIF/JPEG at about 1600px is ideal; `next/image` handles resizing.
 
 | Where | How |
 | --- | --- |
-| Products | Put files in `public/images/products/` and set `image` on the product in `src/content/menu.ts` |
-| Hero, shop, packaging, close-up | `src/content/media.ts`: set `src` (the `brief` field describes the shot each slot needs) |
-| Gallery | `src/content/gallery.ts`: set `src` per entry |
-
-The placeholder badge disappears automatically when a slot has a photo.
+| Products (menu dialog, favourites) | Put files in `public/images/products/` and set `image` on the product in `src/content/menu.ts` |
+| Hero disc, story circle | `src/content/media.ts`: set `src` (the `brief` field describes the shot) |
+| Gallery | Add entries to `src/content/gallery.ts`. The gallery then replaces the Instagram band. |
 
 ### Logo
 

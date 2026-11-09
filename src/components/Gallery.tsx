@@ -4,12 +4,42 @@ import type { Locale } from "@/content/menu";
 import { gallery, type GalleryItem } from "@/content/gallery";
 import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/content/business";
 import { getDictionary } from "@/i18n/dictionaries";
-import { PhotoSlot } from "./PhotoSlot";
+import Image from "next/image";
+import { asset } from "@/lib/site";
+import { LineArt } from "./LineArt";
+import { ArrowIcon } from "./icons";
 import { ChevronIcon, CloseIcon, InstagramIcon } from "./icons";
 
-const spec = (g: GalleryItem) => ({ kind: g.kind, dough: g.colors.base, chunks: g.colors.chips, backdrop: g.colors.bg, accent: g.colors.accent });
+const Photo = ({ g, locale, sizes }: { g: GalleryItem; locale: Locale; sizes: string }) => (
+  <Image src={asset(g.src)} alt={g.alt[locale]} fill sizes={sizes} style={{ objectFit: "cover" }} />
+);
+
+/** Instagram invitation — shown instead of the gallery until real photos are added. */
+function InstagramBand({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
+  return (
+    <section id="gallery" className="ig section" aria-labelledby="ig-title">
+      <div className="container ig__inner" data-reveal>
+        <LineArt kind="bag" className="ig__art" />
+        <div className="ig__copy">
+          <p className="kicker">{t.gallery.igEyebrow}</p>
+          <h2 id="ig-title" className="heading-xl">{t.gallery.igTitle}</h2>
+          <p className="lead">{t.gallery.igText}</p>
+        </div>
+        <a href={INSTAGRAM_URL} className="ig__handle" target="_blank" rel="noopener noreferrer">
+          <InstagramIcon /> {INSTAGRAM_HANDLE} <ArrowIcon />
+        </a>
+      </div>
+    </section>
+  );
+}
 
 export function Gallery({ locale }: { locale: Locale }) {
+  if (gallery.length === 0) return <InstagramBand locale={locale} />;
+  return <PhotoGallery locale={locale} />;
+}
+
+function PhotoGallery({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const [index, setIndex] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -40,7 +70,6 @@ export function Gallery({ locale }: { locale: Locale }) {
           <div className="gallery__head">
             <div>
               <h2 id="gallery-title" className="display-lg">{t.gallery.title}</h2>
-              {gallery.some((g) => !g.src) && <p className="muted gallery__note">{t.gallery.note}</p>}
             </div>
             <a href={INSTAGRAM_URL} className="btn btn--outline" target="_blank" rel="noopener noreferrer">
               <InstagramIcon /> {t.gallery.follow} {INSTAGRAM_HANDLE}
@@ -51,7 +80,7 @@ export function Gallery({ locale }: { locale: Locale }) {
           {items.map((g, i) => (
             <li key={g.id} className={`gallery__item gallery__item--${g.shape}`} data-reveal style={{ ["--i" as string]: i % 4 }}>
               <button type="button" className="gallery__btn" aria-haspopup="dialog" aria-label={`${t.gallery.open}: ${g.alt[locale]}`} onClick={(e) => show(i, e.currentTarget)}>
-                <PhotoSlot locale={locale} src={g.src} alt={g.alt[locale]} spec={spec(g)} sizes="(min-width: 960px) 40vw, 90vw" quiet={g.shape === "square"} />
+                <Photo g={g} locale={locale} sizes="(min-width: 960px) 40vw, 90vw" />
                 <span className="gallery__caption" aria-hidden="true">{g.alt[locale]}</span>
               </button>
             </li>
@@ -84,7 +113,7 @@ export function Gallery({ locale }: { locale: Locale }) {
         {current && (
           <figure className="lightbox__figure" key={current.id}>
             <div className="lightbox__media">
-              <PhotoSlot locale={locale} src={current.src} alt={current.alt[locale]} spec={spec(current)} sizes="90vw" />
+              <Photo g={current} locale={locale} sizes="90vw" />
             </div>
             <figcaption>
               <span>{current.alt[locale]}</span>

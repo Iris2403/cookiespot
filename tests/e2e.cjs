@@ -19,11 +19,11 @@ const ok = (m) => console.log('✓', m);
   assert.ok(hrefs.includes('tel:+302106983637')); ok('tel link');
   // category filter
   await p.click('.menu-tab:has-text("Brookies")');
-  assert.equal(await p.$$eval('.menu-group', g => g.length), 1);
-  assert.equal(await p.$$eval('.product-card', g => g.length), 2); ok('category filter');
+  assert.equal(await p.$$eval('.menu-sec', g => g.length), 1);
+  assert.equal(await p.$$eval('.menu-row', g => g.length), 2); ok('category filter');
   await p.click('.menu-tab:has-text("All")');
   // dialog
-  await p.click('.product-card__open:has-text("Pistachio Cookie")');
+  await p.click('.menu-row__main:has-text("Pistachio Cookie")');
   await p.waitForSelector('dialog.product-dialog[open]');
   assert.match(await p.textContent('#product-dialog-title'), /Pistachio Cookie/);
   assert.ok((await p.evaluate(() => location.hash)).includes('#p/pistachio-cookie'));
@@ -42,18 +42,18 @@ const ok = (m) => console.log('✓', m);
   await p.waitForTimeout(300);
   assert.match(await p.textContent('.menu-tab[aria-pressed="true"]'), /skillet/i); ok('"more than a cookie" panel selects menu category');
   // favourites open dialog
-  await p.click('.feature-card__open >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('featured cookie opens dialog');
+  await p.click('.fav__open >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('favourite opens dialog');
   await p.waitForTimeout(300);
-  await p.click('.menu-tab:has-text("Drinks")'); await p.click('.board__name >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('drinks board item opens dialog');
+  await p.click('.menu-tab:has-text("Drinks")'); await p.click('.menu-row__main >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('drinks board item opens dialog');
   await p.waitForTimeout(300); await p.click('.menu-tab:has-text("All")');
-  const nxt = '.featured .carousel__nav button:last-child'; const before = await p.$eval('.featured .carousel__track', t => t.scrollLeft);
-  await p.click(nxt); await p.waitForTimeout(700); assert.ok(await p.$eval('.featured .carousel__track', t => t.scrollLeft) > before); ok('featured carousel next button scrolls');
+  assert.ok(await p.$('a.ig__handle[href^="https://www.instagram.com/thecookiespotathens"]')); ok('Instagram band links to the brand account');
+  assert.equal(await p.$$eval('text=/Photo coming soon/i', e => e.length), 0); ok('no placeholder photo boxes');
   const nNav = await p.evaluate(() => { document.getElementById('gallery').scrollIntoView({ behavior: 'instant' }); return new Promise(r => setTimeout(() => r(document.querySelector('.site-nav__link.is-current')?.textContent), 500)); });
   assert.match(nNav || '', /gallery/i); ok('scroll-spy highlights current section');
-  // gallery
-  await p.click('.gallery__btn >> nth=0'); await p.waitForSelector('dialog.lightbox[open]');
-  const c1 = await p.textContent('.lightbox__count'); await p.keyboard.press('ArrowRight');
-  assert.notEqual(c1, await p.textContent('.lightbox__count')); await p.keyboard.press('Escape'); ok('gallery lightbox + arrows');
+  // gallery lightbox is exercised only when gallery photos exist (content/gallery.ts)
+  if (await p.$('.gallery__btn')) {
+    await p.click('.gallery__btn >> nth=0'); await p.waitForSelector('dialog.lightbox[open]'); await p.keyboard.press('Escape'); ok('gallery lightbox');
+  }
   // map click-to-load
   assert.equal(await p.$('.map iframe'), null);
   await p.click('.map button'); assert.ok(await p.$('.map iframe')); ok('map loads only on click');

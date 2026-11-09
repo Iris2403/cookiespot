@@ -1,74 +1,40 @@
-"use client";
-/**
- * "More than just a cookie" — a 2D scroll story.
- * Desktop: a sticky stage on the left cross-fades between category visuals while the section
- * background colour changes as each category panel scrolls into view (IntersectionObserver,
- * no scroll hijacking). Mobile/reduced-motion: simple stacked colour panels.
- */
-import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/content/menu";
-import { getProduct } from "@/content/menu";
 import { getDictionary } from "@/i18n/dictionaries";
-import { ProductVisual } from "./ProductVisual";
+import { LineArt, type LineKind } from "./LineArt";
 import { ArrowIcon } from "./icons";
 
-const PANELS = [
-  { key: "ny", cat: "ny-style", slug: "triple-choco-praline", tone: "orange" },
-  { key: "brookies", cat: "brookies", slug: "caramel-brookie", tone: "biscuit" },
-  { key: "skillet", cat: "skillet", slug: "chocolate-chip-skillet-ice-cream", tone: "chocolate" },
-  { key: "icecream", cat: "ice-cream", slug: "ice-cream-big-cup", tone: "strawberry" },
-  { key: "shakes", cat: "milkshakes", slug: "pistachio-salted-caramel-milkshake", tone: "pistachio" },
-  { key: "drinks", cat: "cold-drinks", slug: "iced-tea-lemon-bergamot", tone: "white" },
-  { key: "combos", cat: "combos", slug: "combo-8-plus-2", tone: "vanilla" },
-] as const;
+const CHAPTERS: { key: "ny" | "brookies" | "skillet" | "icecream" | "shakes" | "drinks" | "combos"; cat: string; icon: LineKind }[] = [
+  { key: "ny", cat: "ny-style", icon: "ny-cookie" },
+  { key: "brookies", cat: "brookies", icon: "brookie" },
+  { key: "skillet", cat: "skillet", icon: "skillet" },
+  { key: "icecream", cat: "ice-cream", icon: "scoop" },
+  { key: "shakes", cat: "milkshakes", icon: "shake" },
+  { key: "drinks", cat: "cold-drinks", icon: "coffee" },
+  { key: "combos", cat: "combos", icon: "combo" },
+];
 
+/** "More than just a cookie" — the wider menu as magazine chapters. */
 export function MoreThanCookies({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
-  const [active, setActive] = useState(0);
-  const listRef = useRef<HTMLOListElement>(null);
-
-  useEffect(() => {
-    const items = listRef.current?.querySelectorAll<HTMLElement>("[data-index]");
-    if (!items) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.index));
-      },
-      { rootMargin: "-45% 0px -45% 0px" },
-    );
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section id="more" className={`more tone-${PANELS[active].tone}`} aria-labelledby="more-title">
-      <div className="container more__grid">
-        <div className="more__stage">
-          <p className="eyebrow">{t.cravings.eyebrow}</p>
-          <h2 id="more-title" className="display-lg more__title">{t.cravings.title}</h2>
-          <div className="more__visuals" aria-hidden="true">
-            {PANELS.map((p, i) => (
-              <div key={p.key} className={`more__visual${i === active ? " is-active" : ""}`}>
-                <ProductVisual product={getProduct(p.slug)!} locale={locale} sizes="40vw" />
-              </div>
-            ))}
-          </div>
-          <ol className="more__dots" aria-hidden="true">
-            {PANELS.map((p, i) => <li key={p.key} className={i === active ? "is-active" : undefined} />)}
-          </ol>
-        </div>
-        <ol className="more__list" ref={listRef}>
-          {PANELS.map((p, i) => {
-            const copy = t.cravings.panels[p.key];
+    <section id="more" className="chapters section" aria-labelledby="more-title">
+      <div className="container">
+        <header className="section-head section-head--center" data-reveal>
+          <p className="kicker">{t.cravings.eyebrow}</p>
+          <h2 id="more-title" className="heading-xl">{t.cravings.title}</h2>
+        </header>
+        <ol className="chapters__grid">
+          {CHAPTERS.map((c, i) => {
+            const copy = t.cravings.panels[c.key];
             return (
-              <li key={p.key} data-index={i} className={`more__panel tone-${p.tone}`}>
-                <span className="more__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                <div className="more__panel-visual" aria-hidden="true">
-                  <ProductVisual product={getProduct(p.slug)!} locale={locale} sizes="90vw" />
-                </div>
-                <h3 className="more__panel-title">{copy.title}</h3>
-                <p className="more__panel-text">{copy.text}</p>
-                <a href={`#menu-${p.cat}`} className="more__link">{copy.cta} <ArrowIcon /></a>
+              <li key={c.key} className={`chapter chapter--${i}`} data-reveal style={{ ["--i" as string]: i % 3 }}>
+                <a href={`#menu-${c.cat}`} className="chapter__link">
+                  <span className="chapter__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                  <LineArt kind={c.icon} className="chapter__art" />
+                  <span className="chapter__title">{copy.title}</span>
+                  <span className="chapter__text">{copy.text}</span>
+                  <span className="chapter__cta">{copy.cta} <ArrowIcon /></span>
+                </a>
               </li>
             );
           })}

@@ -1,21 +1,23 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Syne, Commissioner } from "next/font/google";
+import { Noto_Serif_Display, Manrope } from "next/font/google";
 import { getDictionary, isLocale, locales } from "@/i18n/dictionaries";
 import { SITE_URL, absoluteUrl } from "@/lib/site";
 import { RevealObserver } from "@/components/RevealObserver";
 import "../globals.css";
 
-// Display face: Syne (contemporary, confident, has Greek). Two static weights keep bytes low.
-const display = Syne({
+// Display face: Noto Serif Display — high-contrast editorial serif with Greek. Light weights + italic.
+const display = Noto_Serif_Display({
   subsets: ["latin", "greek"],
-  weight: ["700", "800"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   // "optional": headlines never wait for, or re-paint with, the web font on slow first visits.
   display: "optional",
 });
 
-const sans = Commissioner({
+// Text face: Manrope — warm, modern sans with Greek.
+const sans = Manrope({
   subsets: ["latin", "greek"],
   variable: "--font-sans",
   display: "swap",
