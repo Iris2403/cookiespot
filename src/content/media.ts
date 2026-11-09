@@ -16,7 +16,7 @@ const img = (src: string, width: number, height: number, el: string, en: string)
 
 export const media = {
   hero: img("brand/we-bake-it-personally", 923, 1122, "Χέρια κρατούν στοίβα από Cookies & Cream μπροστά σε πορτοκαλί φόντο με τη φράση «We bake it personally»", "Hands holding a stack of Cookies & Cream cookies against orange, with the line “We bake it personally”"),
-  peachSix: img("brand/peach-six", 792, 462, "Έξι cookies σε πορτοκαλί φόντο με κομμάτια σοκολάτας και ξηρούς καρπούς", "Six cookies on a peach background with chocolate drops and nuts"),
+  peachSix: img("brand/peach-six", 700, 462, "Έξι cookies σε πορτοκαλί φόντο με κομμάτια σοκολάτας και ξηρούς καρπούς", "Six cookies on a peach background with chocolate drops and nuts"),
   peachTen: img("brand/peach-ten", 923, 462, "Δέκα διαφορετικά cookies σε δύο σειρές", "Ten different cookies in two rows"),
   storefront: img("brand/storefront", 923, 614, "Η βιτρίνα του The Cookie Spot στη Λεωφ. Κηφισίας 129", "The Cookie Spot shop window on Leof. Kifisias 129"),
   counter: img("brand/counter", 923, 614, "Ο πάγκος με φρεσκοψημένα cookies και χειρόγραφες ετικέτες τιμών", "The counter with freshly baked cookies and handwritten price cards"),
