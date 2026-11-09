@@ -97,8 +97,7 @@ export function ProductDialogProvider({ locale, children }: { locale: Locale; ch
         {product && (
           <div className="product-dialog__body">
             <div className={`product-dialog__media tone-${category?.tone ?? "vanilla"}`}>
-              <ProductVisual product={product} sizes="(min-width: 900px) 50vw, 100vw" label={product.image ? displayName : undefined} />
-              {!product.image && <span className="art-note">{t.menu.illustration}</span>}
+              <ProductVisual product={product} locale={locale} sizes="(min-width: 900px) 50vw, 100vw" label={displayName} />
             </div>
             <div className="product-dialog__content">
               <button type="button" className="icon-btn product-dialog__close" onClick={close} aria-label={t.menu.close}>

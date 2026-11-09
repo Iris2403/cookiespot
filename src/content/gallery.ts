@@ -1,26 +1,29 @@
 import type { Localized } from "./menu";
+import type { SlotKind } from "@/components/PhotoSlot";
 
 /**
- * Gallery entries. Replace `productSlug` illustrations with authorised photography by setting
- * `image` (path under /public, ideally 1600px+ wide, WebP/AVIF/JPEG) — e.g. images exported
- * from the brand's own Instagram archive with the owner's permission.
+ * Gallery — a shot list for the brand's own photography. Each entry renders a labelled
+ * placeholder until `src` (a path under /public/images/gallery/) is set.
  */
 export interface GalleryItem {
   id: string;
-  productSlug: string;
-  image?: string;
+  src?: string;
   alt: Localized;
   shape: "tall" | "wide" | "square" | "hero";
-  crop?: string;
+  kind: SlotKind;
+  colors: { base: string; chips: string[]; bg: string; accent?: string };
 }
 
+const dough = "#D9A066";
+const choc = ["#3D2618", "#6B3E22"];
+
 export const gallery: GalleryItem[] = [
-  { id: "g1", productSlug: "pistachio-cookie", shape: "hero", alt: { el: "Pistachio NY-style cookie από κοντά", en: "Close-up of the Pistachio NY-style cookie" } },
-  { id: "g2", productSlug: "chocolate-chip-skillet-ice-cream", shape: "tall", alt: { el: "Skillet cookie με παγωτό", en: "Skillet cookie topped with ice cream" } },
-  { id: "g3", productSlug: "caramel-brookie", shape: "square", alt: { el: "Caramel Brookie σε κομμάτι", en: "A slice of Caramel Brookie" } },
-  { id: "g4", productSlug: "pistachio-salted-caramel-milkshake", shape: "tall", alt: { el: "Milkshake Pistachio Salted Caramel", en: "Pistachio Salted Caramel milkshake" } },
-  { id: "g5", productSlug: "triple-choco-praline", shape: "wide", crop: "90 70 220 160", alt: { el: "Η υφή του Triple Choco-Praline", en: "Texture of the Triple Choco-Praline" } },
-  { id: "g6", productSlug: "mini-cookies", shape: "wide", alt: { el: "Mini cookies για μοίρασμα", en: "Mini cookies for sharing" } },
-  { id: "g7", productSlug: "cookie-dippers", shape: "square", alt: { el: "Cookie Dippers με τρία dips", en: "Cookie Dippers with three dips" } },
-  { id: "g8", productSlug: "combo-8-plus-2", shape: "wide", alt: { el: "Κουτί με cookies", en: "A box of cookies" } },
+  { id: "g1", shape: "hero", kind: "ny-cookie", alt: { el: "NY-style cookies στον πάγκο", en: "NY-style cookies on the counter" }, colors: { base: dough, chips: ["#8E9C6B", "#FFF8EF", "#3D2618"], bg: "#ED7033" } },
+  { id: "g2", shape: "tall", kind: "shop", alt: { el: "Το εσωτερικό του καταστήματος", en: "Inside the shop" }, colors: { base: dough, chips: choc, bg: "#E9D8C5" } },
+  { id: "g3", shape: "square", kind: "brookie", alt: { el: "Brookie σε κομμάτια", en: "Brookie slices" }, colors: { base: dough, chips: ["#3D2618", "#C7772E"], bg: "#FFF8EF", accent: "#C7772E" } },
+  { id: "g4", shape: "tall", kind: "shake", alt: { el: "Milkshake", en: "A milkshake" }, colors: { base: "#E8B8A5", chips: ["#C7655A"], bg: "#FFFFFF", accent: "#ED7033" } },
+  { id: "g5", shape: "wide", kind: "skillet", alt: { el: "Skillet cookie με παγωτό", en: "Skillet cookie with ice cream" }, colors: { base: dough, chips: choc, bg: "#3D2618" } },
+  { id: "g6", shape: "square", kind: "packaging", alt: { el: "Η συσκευασία", en: "The packaging" }, colors: { base: dough, chips: choc, bg: "#A9B68B" } },
+  { id: "g7", shape: "square", kind: "mini", alt: { el: "Mini cookies", en: "Mini cookies" }, colors: { base: dough, chips: ["#3D2618", "#C7655A", "#8E9C6B"], bg: "#E8B8A5" } },
+  { id: "g8", shape: "wide", kind: "combo", alt: { el: "Κουτί με cookies", en: "A box of cookies" }, colors: { base: dough, chips: ["#3D2618", "#8E9C6B", "#C7772E"], bg: "#E9D8C5" } },
 ];

@@ -14,7 +14,7 @@ export function SiteFooter({ locale, onHome = true }: { locale: Locale; onHome?:
     <footer className="site-footer">
       <div className="container">
         <div className="site-footer__cta">
-          <p className="site-footer__big">{t.hero.titleA} <em>{t.hero.titleB}</em> {t.hero.titleC}</p>
+          <p className="site-footer__big">{t.hero.titleA} <em>{t.hero.titleB}</em></p>
           <a href={orderUrl(undefined, locale)} className="btn btn--primary btn--lg" target="_blank" rel="noopener noreferrer">{t.footer.orderWolt} <ArrowIcon /></a>
         </div>
         <div className="site-footer__grid">

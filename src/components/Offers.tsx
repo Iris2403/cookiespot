@@ -31,7 +31,7 @@ export function Offers({ locale }: { locale: Locale }) {
             return (
               <li key={p.slug} className={`offer offer--${i}`} data-reveal style={{ ["--i" as string]: i }}>
                 <div className="offer__art" aria-hidden="true">
-                  <ProductVisual product={p} sizes="(min-width: 960px) 25vw, 90vw" />
+                  <ProductVisual product={p} locale={locale} sizes="(min-width: 960px) 25vw, 90vw" />
                 </div>
                 <div className="offer__body">
                   {h ? (

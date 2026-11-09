@@ -10,8 +10,8 @@
  *  - Only write `description`, `facts` and `dietary` that appear on the official listing.
  *    Never invent ingredients, allergens or weights.
  *  - `image` is a path under /public (e.g. "/images/products/pistachio-cookie.webp").
- *    Use only photography owned or authorised by The Cookie Spot. When omitted, the site renders
- *    an art-directed illustration (see components/ProductArt.tsx) instead of stock photography.
+ *    Use only photography owned or authorised by The Cookie Spot. When omitted, the site shows a
+ *    clearly labelled flat placeholder ("Photo coming soon") — never stock or generated imagery.
  *  - `woltUrl` can point to the item's own Wolt page; otherwise the store page is used.
  */
 
@@ -39,7 +39,10 @@ export type CategoryId =
 
 export type ArtKind = "cookie" | "ny-cookie" | "brookie" | "skillet" | "mini" | "dippers" | "scoop" | "tub" | "shake" | "drink" | "combo";
 
-/** Visual recipe for the illustration fallback. Colours are hex. */
+/**
+ * Recipe for the flat 2D placeholder graphic shown until a real product photo is added
+ * (see components/PhotoSlot.tsx). Colours are hex. Purely graphic — never presented as a photo.
+ */
 export interface ArtSpec {
   kind: ArtKind;
   dough: string;
@@ -191,8 +194,8 @@ const C = {
   darkChoc: "#2B160C",
   milkChoc: "#6B3E22",
   white: "#F3E6D0",
-  pistachio: "#93B060",
-  strawberry: "#D9586B",
+  pistachio: "#8E9C6B",
+  strawberry: "#C7655A",
   caramel: "#C7772E",
   biscoff: "#B0672F",
   blueberry: "#4B4F8F",
@@ -201,8 +204,8 @@ const C = {
   biscuit: "#E9D8C5",
   chocolateBg: "#3D2618",
   orange: "#ED7033",
-  pistachioBg: "#DCE6C4",
-  strawberryBg: "#F6D3D6",
+  pistachioBg: "#A9B68B",
+  strawberryBg: "#E8B8A5",
 };
 
 export const products: Product[] = [

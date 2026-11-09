@@ -3,7 +3,8 @@ import { isLocale, getDictionary } from "@/i18n/dictionaries";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Hero } from "@/components/Hero";
 import { Marquee } from "@/components/Marquee";
-import { Cravings } from "@/components/Cravings";
+import { FeaturedCookies } from "@/components/FeaturedCookies";
+import { MoreThanCookies } from "@/components/MoreThanCookies";
 import { MenuExplorer } from "@/components/MenuExplorer";
 import { ProductDialogProvider } from "@/components/ProductDialog";
 import { Story } from "@/components/Story";
@@ -26,21 +27,22 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
       <main id="main">
         <Hero locale={lang} />
         <Marquee items={t.marquee} />
-        <Cravings locale={lang} />
+        <FeaturedCookies locale={lang} />
         <section id="menu" className="menu section" aria-labelledby="menu-title">
           <div className="container">
             <div className="section-head section-head--split" data-reveal>
               <p className="eyebrow">{t.menu.eyebrow}</p>
               <div>
-                <h2 id="menu-title" className="display-xl">{t.menu.title}</h2>
+                <h2 id="menu-title" className="display-lg">{t.menu.title}</h2>
                 <p className="lead">{t.menu.lead}</p>
               </div>
             </div>
             <MenuExplorer locale={lang} />
           </div>
         </section>
-        <Offers locale={lang} />
+        <MoreThanCookies locale={lang} />
         <Story locale={lang} />
+        <Offers locale={lang} />
         <Gallery locale={lang} />
         <Reviews locale={lang} />
         <Locations locale={lang} />

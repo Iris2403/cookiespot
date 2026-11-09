@@ -11,6 +11,7 @@ export function SiteHeader({ locale, onHome = true }: { locale: Locale; onHome?:
   const t = getDictionary(locale);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const base = onHome ? "" : `/${locale}`;
@@ -23,6 +24,26 @@ export function SiteHeader({ locale, onHome = true }: { locale: Locale; onHome?:
     { href: `${base}#locations`, label: t.nav.locations },
     { href: `${base}#contact`, label: t.nav.contact },
   ];
+
+  // Scroll-spy: highlight the nav item of the section in the middle of the viewport.
+  useEffect(() => {
+    if (!onHome) return;
+    const ids = ["menu", "story", "gallery", "locations", "contact"];
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setCurrent(e.target.id);
+      },
+      { rootMargin: "-45% 0px -54% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    const top = () => window.scrollY < 200 && setCurrent(null);
+    window.addEventListener("scroll", top, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", top);
+    };
+  }, [onHome]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -80,7 +101,9 @@ export function SiteHeader({ locale, onHome = true }: { locale: Locale; onHome?:
           <ul>
             {links.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="site-nav__link">{l.label}</a>
+                <a href={l.href} className={`site-nav__link${current && l.href.endsWith(`#${current}`) ? " is-current" : ""}`} aria-current={current && l.href.endsWith(`#${current}`) ? "true" : undefined}>
+                  {l.label}
+                </a>
               </li>
             ))}
           </ul>

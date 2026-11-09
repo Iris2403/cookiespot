@@ -14,7 +14,6 @@ npm run build && npm start
 | `npm run lint` / `npm run typecheck` | ESLint (Next config) / TypeScript |
 | `npm test` | Unit tests: form validation, spam checks, rate limiter, opening hours, catalogue integrity |
 | `npm run test:e2e` | Browser checks against a running server (`BASE_URL`, needs Playwright) |
-| `npm run illustrations` | Re-rasterises product illustrations to WebP (run after changing menu art) |
 | `npm run audit:deps` | `npm audit` for production dependencies |
 
 ## Live preview on GitHub Pages
@@ -30,6 +29,37 @@ The Pages copy is built with `STATIC_EXPORT=1` (`output: "export"`, base path `/
 - No custom security headers are sent (Pages can't set them).
 
 For the full site, deploy the normal build to a Node host such as Vercel.
+
+## Design system (strictly 2D)
+
+No Three.js, WebGL, 3D models, perspective, lighting or fake-depth effects. Motion is CSS transforms and opacity plus small `IntersectionObserver`/`requestAnimationFrame` scripts, with no animation library. Everything respects `prefers-reduced-motion`.
+
+- **Colours:**
+  - Brand: chocolate `#3D2618`, orange `#ED7033`, white.
+  - Supporting colours, used sparingly: vanilla `#FFF8EF`, biscuit `#E9D8C5`, pistachio `#A9B68B`, strawberry `#E8B8A5`.
+  - White text never sits on orange (contrast). Small orange text on light backgrounds uses `#A84413`.
+- **Type:**
+  - Syne 800 for uppercase display headings. It is contemporary, confident and includes Greek glyphs.
+  - Commissioner for body and UI text.
+- **Graphic language:**
+  - Chocolate outlines and flat offset "sticker" shadows.
+  - Round stickers and pill buttons, a wavy edge out of the hero, and a marquee band.
+- **Sections:**
+  1. Orange campaign hero
+  2. Featured cookies (carousel)
+  3. Menu: a different layout per group: feature, grid, landscape, chocolate panel, pistachio band, strawberry carousel and a drinks menu board
+  4. "More than just a cookie": a sticky stage whose background colour and image change per category as you scroll
+  5. "We bake it personally" story
+  6. Offers
+  7. Gallery and lightbox
+  8. Reviews
+  9. Location
+  10. Contact and footer
+- **Interactions:**
+  - Sticky header that changes from orange to white on scroll, with the current section highlighted.
+  - Animated mobile menu and a sticky mobile order bar.
+  - Hover reveals extra product info on mouse devices and always shows it on touch.
+  - Accessible `<dialog>` product view with shareable `#p/<slug>` links.
 
 ## Stack
 
@@ -48,7 +78,7 @@ src/content/gallery.ts    ← gallery entries
 src/i18n/dictionaries.ts  ← all UI copy, EL + EN
 src/components/           ← sections & interactive pieces
 src/app/api/contact/      ← contact form endpoint
-src/app/art/[file]/       ← SVG source of each product illustration
+src/content/media.ts      ← brand photo slots (hero, shop, packaging, close-up)
 src/proxy.ts              ← "/" → /el or /en based on Accept-Language
 ```
 
@@ -59,19 +89,22 @@ Edit `src/content/menu.ts`. That is the only place prices live; every card, dial
 - Set `price: null` when you can't verify a price. The UI then shows "See price on Wolt".
 - Only write `description`, `facts` and `dietary` that appear on the official listing.
 - Add `woltUrl` to deep-link a product to its own Wolt item page. Otherwise links go to the store page.
-- Add `image: "/images/products/<slug>.webp"` once you have **authorised product photography**. `next/image` then serves AVIF/WebP in responsive sizes and replaces the illustration.
+- Add `image: "/images/products/<slug>.webp"` once you have **authorised product photography**. `next/image` then serves AVIF/WebP in responsive sizes and replaces the "Photo coming soon" placeholder.
 - Update `MENU_LAST_VERIFIED`. It is shown to visitors.
 
-### Product imagery
+### Photography (placeholders until real photos are added)
 
-No brand photography could be downloaded during this build (see Limitations). Each product therefore has an **art-directed illustration**: a textured, lit SVG generated from its `art` spec (`src/components/ProductArt.tsx`). The illustrations are pre-rasterised to `public/illustrations/<slug>-{480,960}.webp` so phones decode a small WebP instead of painting heavy SVG filters. The dialog labels them as illustrations.
+The brand's photos (Instagram, Google, the shop, packaging) could not be accessed from the build environment. **No stock, AI-generated or illustrated "product photos" are used.** Every image position is a `PhotoSlot` (`src/components/PhotoSlot.tsx`): a flat 2D brand graphic with a visible **"Photo coming soon / Φωτογραφία σύντομα"** badge.
 
-To regenerate the WebPs after changing `art` specs:
+To add real photography, use only images owned or authorised by The Cookie Spot. WebP/AVIF/JPEG at about 1600px is ideal; `next/image` resizes them.
 
-```bash
-npm run build && npm start   # terminal 1 (port 3000)
-npm run illustrations        # terminal 2 (ART_BASE_URL to override the server URL)
-```
+| Where | How |
+| --- | --- |
+| Products | Put files in `public/images/products/` and set `image` on the product in `src/content/menu.ts` |
+| Hero, shop, packaging, close-up | `src/content/media.ts`: set `src` (the `brief` field describes the shot each slot needs) |
+| Gallery | `src/content/gallery.ts`: set `src` per entry |
+
+The placeholder badge disappears automatically when a slot has a photo.
 
 ### Logo
 

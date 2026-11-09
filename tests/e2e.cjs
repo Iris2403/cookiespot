@@ -40,9 +40,16 @@ const ok = (m) => console.log('✓', m);
   // cravings deep link to category
   await p.click('a[href="#menu-skillet"]');
   await p.waitForTimeout(300);
-  assert.equal(await p.getAttribute('.menu-tab[aria-pressed="true"]', 'class').then(c => c.includes('orange')), true); ok('cravings panel selects category');
+  assert.match(await p.textContent('.menu-tab[aria-pressed="true"]'), /skillet/i); ok('"more than a cookie" panel selects menu category');
   // favourites open dialog
-  await p.click('.fav__btn >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('favourites open dialog');
+  await p.click('.feature-card__open >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('featured cookie opens dialog');
+  await p.waitForTimeout(300);
+  await p.click('.menu-tab:has-text("Drinks")'); await p.click('.board__name >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('drinks board item opens dialog');
+  await p.waitForTimeout(300); await p.click('.menu-tab:has-text("All")');
+  const nxt = '.featured .carousel__nav button:last-child'; const before = await p.$eval('.featured .carousel__track', t => t.scrollLeft);
+  await p.click(nxt); await p.waitForTimeout(700); assert.ok(await p.$eval('.featured .carousel__track', t => t.scrollLeft) > before); ok('featured carousel next button scrolls');
+  const nNav = await p.evaluate(() => { document.getElementById('gallery').scrollIntoView({ behavior: 'instant' }); return new Promise(r => setTimeout(() => r(document.querySelector('.site-nav__link.is-current')?.textContent), 500)); });
+  assert.match(nNav || '', /gallery/i); ok('scroll-spy highlights current section');
   // gallery
   await p.click('.gallery__btn >> nth=0'); await p.waitForSelector('dialog.lightbox[open]');
   const c1 = await p.textContent('.lightbox__count'); await p.keyboard.press('ArrowRight');

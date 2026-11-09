@@ -1,28 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Noto_Serif_Display, Commissioner } from "next/font/google";
+import { Syne, Commissioner } from "next/font/google";
 import { getDictionary, isLocale, locales } from "@/i18n/dictionaries";
 import { SITE_URL, absoluteUrl } from "@/lib/site";
 import { RevealObserver } from "@/components/RevealObserver";
 import "../globals.css";
 
-// Display face: two static weights only (keeps first-load font bytes small). Italic headline
-// accents use a separate italic instance below.
-const display = Noto_Serif_Display({
+// Display face: Syne (contemporary, confident, has Greek). Two static weights keep bytes low.
+const display = Syne({
   subsets: ["latin", "greek"],
-  weight: ["800", "900"],
-  style: ["normal"],
+  weight: ["700", "800"],
   variable: "--font-display",
-  // "optional": headline text never waits for or re-paints with the web font on slow first
-  // visits (protects LCP/CLS); the font is cached and used from the next page view on.
-  display: "optional",
-});
-
-const displayItalic = Noto_Serif_Display({
-  subsets: ["latin", "greek"],
-  weight: ["800"],
-  style: ["italic"],
-  variable: "--font-display-italic",
+  // "optional": headlines never wait for, or re-paint with, the web font on slow first visits.
   display: "optional",
 });
 
@@ -76,7 +65,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   if (!isLocale(lang)) notFound();
   const t = getDictionary(lang);
   return (
-    <html lang={lang} className={`${display.variable} ${displayItalic.variable} ${sans.variable}`}>
+    <html lang={lang} className={`${display.variable} ${sans.variable}`}>
       <body>
         <a className="skip-link" href="#main">{t.skip}</a>
         {children}
