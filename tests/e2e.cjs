@@ -29,7 +29,7 @@ const ok = (m) => console.log('✓', m);
   await p.click('.menu-tab:has-text("Brookies")');
   assert.equal(await p.$$eval('.menu-sec', g => g.length), 1);
   assert.equal(await p.$$eval('.menu-card', g => g.length), 2); ok('category filter');
-  await p.click('.menu-tab:has-text("All")');
+  await p.click('.menu-tab:text-is("NY Style Cookies")');
   // dialog
   await p.click('.menu-card__main:has-text("Pistachio Cookie")');
   await p.waitForSelector('dialog.product-dialog[open]');
@@ -53,7 +53,8 @@ const ok = (m) => console.log('✓', m);
   await p.click('.fav-card__open >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('favourite opens dialog');
   await p.waitForTimeout(300);
   await p.click('.menu-tab:text-is("Coffee")'); await p.click('.menu-card__main >> nth=0'); await p.waitForSelector('dialog.product-dialog[open]'); await p.keyboard.press('Escape'); ok('coffee item opens dialog');
-  await p.waitForTimeout(300); await p.click('.menu-tab:has-text("All")');
+  await p.waitForTimeout(300);
+  assert.equal(await p.$$eval('.menu-tab', b => b.filter(x => /^(All|Όλα)$/.test(x.textContent.trim())).length), 0); ok('no "All" tab');
   assert.ok(await p.$('#gallery a[href^="https://www.instagram.com/thecookiespotathens"]')); ok('gallery links to the brand Instagram');
   assert.equal(await p.$$eval('header img.logo[src*="logo.svg"]', e => e.length), 1); ok('real brand logo in header');
   const broken = await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); } await new Promise(r => setTimeout(r, 800)); return [...document.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.src); });

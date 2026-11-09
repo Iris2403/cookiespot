@@ -16,7 +16,7 @@ const HASH_PREFIX = "#menu-";
 
 export function MenuExplorer({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
-  const [filter, setFilter] = useState<"all" | CategoryId>("all");
+  const [filter, setFilter] = useState<CategoryId>(categories[0].id);
   const rootRef = useRef<HTMLDivElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -43,19 +43,18 @@ export function MenuExplorer({ locale }: { locale: Locale }) {
     scroller.scrollTo({ left: Math.max(0, el.offsetLeft - (scroller.clientWidth - el.offsetWidth) / 2), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }, [filter]);
 
-  const select = (f: "all" | CategoryId) => {
+  const select = (f: CategoryId) => {
     setFilter(f);
     if ((rootRef.current?.getBoundingClientRect().top ?? 0) < 0) rootRef.current?.scrollIntoView({ block: "start" });
   };
 
-  const visible = filter === "all" ? categories : categories.filter((c) => c.id === filter);
+  const visible = categories.filter((c) => c.id === filter);
   const count = visible.reduce((n, c) => n + products.filter((p) => p.category === c.id).length, 0);
 
   return (
     <div className="menu-explorer" ref={rootRef}>
       <div className="menu-tabs" ref={tabsRef}>
         <div className="menu-tabs__scroller" role="toolbar" aria-label={t.menu.categories}>
-          <button type="button" className="menu-tab" aria-pressed={filter === "all"} onClick={() => select("all")}>{t.menu.all}</button>
           {categories.map((c) => (
             <button key={c.id} type="button" className="menu-tab" aria-pressed={filter === c.id} onClick={() => select(c.id)}>
               {c.label[locale]}
