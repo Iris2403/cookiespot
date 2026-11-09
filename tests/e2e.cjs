@@ -76,6 +76,7 @@ const ok = (m) => console.log('✓', m);
   await p.waitForTimeout(2600);
   await p.click('.form button[type=submit]'); await p.waitForFunction(() => document.querySelector('.form__status').textContent.length > 0);
   console.log('  form status (no email provider configured):', await p.textContent('.form__status'));
+  await p.evaluate(() => scrollTo({ top: 4000, behavior: 'instant' })); await p.click('.site-header__logo'); await p.waitForFunction(() => scrollY === 0, null, { timeout: 4000 }); ok('logo scrolls to the very top');
   // keyboard: tab from top reaches skip link
   await p.goto(B + '/en'); await p.keyboard.press('Tab');
   assert.equal(await p.evaluate(() => document.activeElement.className), 'skip-link'); ok('skip link first in tab order');

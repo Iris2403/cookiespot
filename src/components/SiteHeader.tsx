@@ -93,7 +93,19 @@ export function SiteHeader({ locale, onHome = true }: { locale: Locale; onHome?:
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}`}>
       <div className="site-header__inner">
-        <Link href={`/${locale}`} className="site-header__logo">
+        <Link
+          href={`/${locale}`}
+          className="site-header__logo"
+          onClick={(e) => {
+            // Already on the homepage: go to the very top instead of re-navigating.
+            if (onHome && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
+              e.preventDefault();
+              setOpen(false);
+              if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+              window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+            }
+          }}
+        >
           <Wordmark />
         </Link>
 
