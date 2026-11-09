@@ -3,13 +3,17 @@ import type { Locale } from "@/content/menu";
 import { media } from "@/content/media";
 import { getDictionary } from "@/i18n/dictionaries";
 import { BrandPhoto } from "./BrandPhoto";
+import { HeroVideo } from "./HeroVideo";
 import { ArrowIcon } from "./icons";
 
 /** Photo-led hero: the brand's own "We bake it personally" campaign shot, framed like its orange box. */
 export function Hero({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   return (
-    <section className="hero" aria-labelledby="hero-title">
+    <section className="hero hero--video" aria-labelledby="hero-title">
+      <div className="hero__bg" aria-hidden="true">
+        <HeroVideo />
+      </div>
       <div className="container hero__grid">
         <div className="hero__copy">
           <p className="kicker">{t.hero.eyebrow}</p>
